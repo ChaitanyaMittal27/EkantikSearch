@@ -3,7 +3,7 @@
     background: linear-gradient(to bottom, #FAF3E0, #F5E6D3);
     text-align: center;
     padding: 50px;
-    height: 100vh; /* Full screen */
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
