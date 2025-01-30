@@ -1,0 +1,5 @@
+/* Add space below the header for all pages */
+.main-content {
+    margin-top: 150px; /* Adjust according to header height */
+    padding: 20px;
+}

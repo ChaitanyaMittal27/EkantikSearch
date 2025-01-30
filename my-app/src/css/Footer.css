@@ -1,0 +1,52 @@
+/* Fixed Bottom Footer */
+.footer {
+    background: linear-gradient(to bottom, #E8D8C4, #D5C1A3);
+    text-align: center;
+    padding: 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+}
+
+/* Beautiful Red "Radhe Radhe" Text */
+.radhe-text {
+    font-family: 'Tangerine', cursive;
+    font-size: 28px;
+    color: #B22222; /* Deep spiritual red */
+    font-weight: bold;
+    text-shadow: 1px 1px 6px rgba(255, 0, 0, 0.3);
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+/* Last Updated Section */
+.update-section {
+    display: flex;
+    align-items: center;
+    color:black;
+    gap: 15px;
+}
+
+/* Update Button */
+.update-button {
+    padding: 8px 14px;
+    background-color: #E29538; /* Saffron Orange */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s ease-in-out;
+}
+
+.update-button:hover {
+    background-color: #D17D35;
+}

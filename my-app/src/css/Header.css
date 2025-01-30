@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap');
+/* Spiritual Header with Soft Glow */
+.header {
+    background: linear-gradient(to bottom, #E8D8C4, #D5C1A3);
+    text-align: center;
+    padding: px 0;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+/* Elegant Spiritual Font */
+.title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 46px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #7A3E30; /* Deep brown for warmth */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+/* Navigation Tabs */
+.nav-tabs ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding: 10px 0;
+    margin: 0;
+    background: #E29538; /* Saffron Orange */
+    border-top: 2px solid #D17D35;
+    border-bottom: 2px solid #D17D35;
+}
+
+/* Navigation Links */
+.nav-tabs ul li {
+    display: inline;
+}
+
+.nav-tabs ul li a {
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #5A3E1B;
+    padding: 12px 18px;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+}
+
+.nav-tabs ul li a:hover {
+    background: #D17D35;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Language Toggle Button */
+.lang-button {
+    background: transparent;
+    border: 2px solid #5A3E1B;
+    padding: 6px 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #5A3E1B;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+}
+
+.lang-button:hover {
+    background: #D17D35;
+    color: white;
+}
+

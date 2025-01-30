@@ -1,0 +1,19 @@
+/* Background with Marble-Like Soft White */
+.about-container {
+    background: linear-gradient(to bottom, #FAF3E0, #F5E6D3);
+    text-align: center;
+    padding: 50px;
+    height: 100vh; /* Full screen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* About Description */
+.about-description {
+    font-size: 22px;
+    color: #5A3E1B; /* Warm Earthy Brown */
+    max-width: 600px;
+    margin: auto;
+    line-height: 1.6;
+}
