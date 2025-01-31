@@ -1,8 +1,18 @@
 import requests
-import key
+from dotenv import load_dotenv
+import os
 
 TEST_VIDEO_ID =  "BERx9L9_JFA"  #"YOUR_VIDEO_ID"
-API_KEY = key.YOUTUBE_DATA_API_KEY
+
+
+# Load environment variables from .env
+load_dotenv(dotenv_path="../.env")
+
+# Retrieve API key
+API_KEY = os.getenv("YOUTUBE_API_KEY")
+
+if not API_KEY:
+    raise ValueError("❌ API_KEY is missing! Make sure it's set in the .env file.")
 
 
 def fetch_video_description(video_id):

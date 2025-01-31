@@ -17,11 +17,17 @@ Output:
 
 import requests
 import json
-import key
+from dotenv import load_dotenv
+import os
 
+# Load environment variables from .env
+load_dotenv(dotenv_path="../.env")
 
-# 🔹 INSERT YOUR YOUTUBE API KEY HERE
-API_KEY = key.YOUTUBE_DATA_API_KEY
+# Retrieve API key
+API_KEY = os.getenv("YOUTUBE_API_KEY")
+
+if not API_KEY:
+    raise ValueError("❌ API_KEY is missing! Make sure it's set in the .env file.")
 
 # 🔹 YouTube channel ID for Bhajan Marg
 CHANNEL_ID = "UCEk1jBxAl6fe-_G37G7huQA"

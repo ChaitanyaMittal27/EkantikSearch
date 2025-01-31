@@ -2,15 +2,22 @@ import requests
 import re
 import sys
 import os
-from key import YOUTUBE_DATA_API_KEY  # Import YouTube API key
+from dotenv import load_dotenv
+import os
 from db_controller import TableEntry, insert_into_db, setup_database  # Import database functions
 
 # 🔹 Input file with relevant video IDs
 FILTERED_VIDEOS_FILE = "filtered_videos.txt"
 # 🔹 Failed videos log file
 FAILED_DETAILS_FILE = "failed_details.txt"
-# 🔹 YouTube Data API key
-API_KEY = YOUTUBE_DATA_API_KEY
+# Load environment variables from .env
+load_dotenv(dotenv_path="../.env")
+
+# Retrieve API key
+API_KEY = os.getenv("YOUTUBE_API_KEY")
+
+if not API_KEY:
+    raise ValueError("❌ API_KEY is missing! Make sure it's set in the .env file.")
 
 # 🔹 Function to fetch video descriptions from YouTube Data API
 def fetch_video_description(video_id):
