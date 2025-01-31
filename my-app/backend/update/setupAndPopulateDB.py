@@ -3,13 +3,13 @@ import re
 import sys
 import os
 from dotenv import load_dotenv
-import os
-from db_controller import TableEntry, insert_into_db, setup_database  # Import database functions
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from db.db_controller import TableEntry, insert_into_db, setup_database
 
 # 🔹 Input file with relevant video IDs
-FILTERED_VIDEOS_FILE = "filtered_videos.txt"
+FILTERED_VIDEOS_FILE = "update/filtered_videos.txt"
 # 🔹 Failed videos log file
-FAILED_DETAILS_FILE = "failed_details.txt"
+FAILED_DETAILS_FILE = "update/failed_details.txt"
 # Load environment variables from .env
 load_dotenv(dotenv_path="../.env")
 

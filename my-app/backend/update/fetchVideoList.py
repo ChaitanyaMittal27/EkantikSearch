@@ -36,7 +36,7 @@ CHANNEL_ID = "UCEk1jBxAl6fe-_G37G7huQA"
 CHANNEL_URL = f"https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id={CHANNEL_ID}&key={API_KEY}"
 
 # 🔹 Output file to store video list
-OUTPUT_FILE = "all_videos.txt"
+OUTPUT_FILE = "update/all_videos.txt"
 
 def get_uploads_playlist_id():
     """

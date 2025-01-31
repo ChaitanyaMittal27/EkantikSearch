@@ -17,9 +17,9 @@ Output:
 import re
 
 # 🔹 Input and output file paths
-INPUT_FILE = "all_videos.txt"
-OUTPUT_FILE = "filtered_videos.txt"
-MISSING_FILE = "missingafterfilter.txt"
+INPUT_FILE = "update/all_videos.txt"
+OUTPUT_FILE = "update/filtered_videos.txt"
+MISSING_FILE = "update/missingafterfilter.txt"
 
 def debug_dump(video_numbers):
     """Prints a debug statement showing video number range and missing videos."""

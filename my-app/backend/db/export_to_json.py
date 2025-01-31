@@ -5,7 +5,7 @@ import sys
 import datetime
 
 # Default database path
-DB_PATH = "ekankik_data.db"
+DB_PATH = "db/ekankik_data.db"
 
 def export_to_json(export_path):
     """

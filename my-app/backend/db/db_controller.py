@@ -2,7 +2,7 @@ import sqlite3
 import json
 
 # 🔹 Database file
-DB_FILE = "ekankik_data.db"
+DB_FILE = "db/ekankik_data.db"
 
 # 🔹 Class to temporarily hold extracted data before database insertion
 class TableEntry:

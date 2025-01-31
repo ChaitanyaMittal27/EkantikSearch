@@ -15,9 +15,9 @@ import os
 import datetime
 
 # Define paths
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-ASSETS_PATH = os.path.join(BASE_DIR, "src/assets/all.json")
-ARCHIVE_PATH = os.path.join(BASE_DIR, f"backend/db_archives/all_{datetime.datetime.now().strftime('%Y%m%d')}.json")
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+ASSETS_PATH = os.path.join(BASE_DIR, "../../src/assets/all.json")
+ARCHIVE_PATH = os.path.join(BASE_DIR, f"../db_archives/all_{datetime.datetime.now().strftime('%Y%m%d')}.json")
 
 def run_command(command):
     """Runs a shell command and exits if it fails."""
@@ -31,18 +31,18 @@ if __name__ == "__main__":
     print("🚀 Starting full database update process...")
 
     # Step 1: Fetch all videos from YouTube API
-    run_command("python fetchVideoList.py")
+    run_command("python update/fetchVideoList.py")
 
     # Step 2: Filter relevant videos with #XXX in title
-    run_command("python filterRelevantVideos.py")
+    run_command("python update/filterRelevantVideos.py")
 
     # Step 3: Fetch descriptions, extract questions, and insert into DB
-    run_command("python setupAndPopulateDB.py")
+    run_command("python update/setupAndPopulateDB.py")
 
     # Step 4: Export the database to JSON for frontend
-    run_command(f"python export_to_json.py {ASSETS_PATH}")
+    run_command(f"python db/export_to_json.py {ASSETS_PATH}")
 
     # Step 5: Archive the exported JSON for historical backups
-    run_command(f"python export_to_json.py {ARCHIVE_PATH}")
+    run_command(f"python db/export_to_json.py {ARCHIVE_PATH}")
 
     print("✅ Database update and export completed successfully!")
