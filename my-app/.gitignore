@@ -25,3 +25,5 @@ dist-ssr
 
 # api keys
 .env
+
+/backend/venv

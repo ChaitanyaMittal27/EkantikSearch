@@ -49,8 +49,8 @@ def insert_into_db(entry):
     conn.close()
 
 # 🔹 Function to search for questions containing a keyword
-def search_questions(keyword):
-    """Searches the database for questions containing a given keyword and exports results to search.json."""
+def search_questions(query):
+    """Searches the database for questions containing a given keyword."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
@@ -59,17 +59,11 @@ def search_questions(keyword):
         FROM questions
         WHERE question_text LIKE ?
         ORDER BY video_index DESC
-    ''', ('%' + keyword + '%',))
+    ''', ('%' + query + '%',))
 
     results = [{"question": row[0], "video_url": row[1], "timestamp": row[2], "video_date": row[3]} for row in cursor.fetchall()]
-    
     conn.close()
-
-    # Save results to search.json
-    with open("search.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, ensure_ascii=False, indent=4)
-
-    print(f"✅ Search results exported to search.json ({len(results)} matches found).")
+    return results
 
 # 🔹 Debug Function: Print all stored data in a readable format
 def debug_print():
