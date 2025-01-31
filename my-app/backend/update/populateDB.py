@@ -17,7 +17,7 @@ import datetime
 # Define paths
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 ASSETS_PATH = os.path.join(BASE_DIR, "../../src/assets/all.json")
-ARCHIVE_PATH = os.path.join(BASE_DIR, f"../db_archives/all_{datetime.datetime.now().strftime('%Y%m%d')}.json")
+ARCHIVE_PATH = os.path.join(BASE_DIR, "../db/db_archives", f"all_{datetime.datetime.now().strftime('%Y%m%d')}.json")
 
 def run_command(command):
     """Runs a shell command and exits if it fails."""

@@ -2,7 +2,6 @@ import sqlite3
 import json
 import os
 import sys
-import datetime
 
 # Default database path
 DB_PATH = "db/ekankik_data.db"
@@ -13,7 +12,7 @@ def export_to_json(export_path):
 
     - Reads all questions from the database.
     - Saves the output to the given `export_path`.
-    - If the file exists, archives it before overwriting.
+    - Always overwrites the file.
 
     Args:
         export_path (str): The path where the JSON file should be saved.
@@ -39,17 +38,7 @@ def export_to_json(export_path):
     # Ensure the output directory exists
     os.makedirs(os.path.dirname(export_path), exist_ok=True)
 
-    # Archive previous file before overwriting
-    if os.path.exists(export_path):
-        archive_folder = "backend/db_archives"
-        os.makedirs(archive_folder, exist_ok=True)
-
-        timestamp = datetime.datetime.now().strftime("%Y%m%d")
-        archive_path = os.path.join(archive_folder, f"all_{timestamp}.json")
-        os.rename(export_path, archive_path)
-        print(f"🗂️ Archived previous file as {archive_path}")
-
-    # Write the new JSON file
+    # Always overwrite the file
     with open(export_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
