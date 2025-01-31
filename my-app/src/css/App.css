@@ -1,5 +1,6 @@
-/* Add space below the header for all pages */
 .main-content {
-    margin-top: 150px; /* Adjust according to header height */
+    margin-top: 120px; /* Reduced to optimize space */
     padding: 20px;
+    height: calc(100vh - 100px); /* Ensures it takes full viewport height */
+    overflow-y: auto; /* Enables scrolling */
 }
