@@ -95,7 +95,7 @@ def main():
         for failed in failed_videos:
             outfile.write(failed + "\n")
 
-    print("✅ All videos processed successfully! Data saved in data.db")
+    print("✅ All videos processed successfully! Data saved in the db.")
     print(f"📌 Failed video details logged in {FAILED_DETAILS_FILE}")
 
 if __name__ == "__main__":

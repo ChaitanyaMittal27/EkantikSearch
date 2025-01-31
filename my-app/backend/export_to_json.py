@@ -1,13 +1,23 @@
 import sqlite3
 import json
 import os
+import sys
 import datetime
 
-# Paths
-DB_PATH = "../backend/ekankik_data.db"  # Adjust the path if needed
-EXPORT_PATH = "../src/assets/search.json"
+# Default database path
+DB_PATH = "ekankik_data.db"
 
-def export_to_json():
+def export_to_json(export_path):
+    """
+    Exports data from ekankik_data.db to a JSON file.
+
+    - Reads all questions from the database.
+    - Saves the output to the given `export_path`.
+    - If the file exists, archives it before overwriting.
+
+    Args:
+        export_path (str): The path where the JSON file should be saved.
+    """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -27,14 +37,29 @@ def export_to_json():
         })
 
     # Ensure the output directory exists
-    os.makedirs(os.path.dirname(EXPORT_PATH), exist_ok=True)
+    os.makedirs(os.path.dirname(export_path), exist_ok=True)
 
-    # Write to JSON
-    with open(EXPORT_PATH, "w", encoding="utf-8") as f:
+    # Archive previous file before overwriting
+    if os.path.exists(export_path):
+        archive_folder = "backend/db_archives"
+        os.makedirs(archive_folder, exist_ok=True)
+
+        timestamp = datetime.datetime.now().strftime("%Y%m%d")
+        archive_path = os.path.join(archive_folder, f"all_{timestamp}.json")
+        os.rename(export_path, archive_path)
+        print(f"🗂️ Archived previous file as {archive_path}")
+
+    # Write the new JSON file
+    with open(export_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
     conn.close()
-    print(f"✅ Database exported successfully to {EXPORT_PATH}")
+    print(f"✅ Database exported successfully to {export_path}")
 
 if __name__ == "__main__":
-    export_to_json()
+    # Ensure an export path is provided
+    if len(sys.argv) < 2:
+        print("❌ Usage: python export_to_json.py <export_path>")
+        sys.exit(1)
+
+    export_to_json(sys.argv[1])
