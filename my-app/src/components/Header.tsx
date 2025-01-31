@@ -12,6 +12,7 @@ const Header: React.FC = () => {
                     <li><Link to="/">Search</Link></li>
                     <li><Link to="/results">Results</Link></li>
                     <li><Link to="/about">About</Link></li>
+                    <li><Link to="/all">All Questions</Link></li>
                     <li>
                         <button className="lang-button">
                             {/* {language === "en" ? "हिंदी" : "English"} */}

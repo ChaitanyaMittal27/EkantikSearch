@@ -23,17 +23,28 @@ def export_to_json(export_path):
     cursor.execute("SELECT * FROM questions")  # Adjust this query as needed
     rows = cursor.fetchall()
 
-    # Assuming the table has columns: id, video_index, timestamp, question, video_title, video_url
+    # Database schema for reference
+    # (0, 'id', 'INTEGER')
+    # (1, 'question_text', 'TEXT')
+    # (2, 'video_url', 'TEXT')
+    # (3, 'timestamp', 'TEXT')
+    # (4, 'video_date', 'TEXT')
+    # (5, 'video_index', 'INTEGER')
+    # (6, 'video_question_index', 'INTEGER')
+
+
     data = []
     for row in rows:
         data.append({
-            "id": row[0],
-            "video_index": row[1],
-            "timestamp": row[2],
-            "question": row[3],
-            "video_title": row[4],
-            "video_url": row[5]
+            "id": row[0],                     # Primary Key
+            "question": row[1],                # `question_text`
+            "video_url": row[2],               # `video_url`
+            "timestamp": row[3],               # `timestamp`
+            "video_date": row[4],              # `video_date`
+            "video_index": row[5],             # `video_index`
+            "video_question_index": row[6]     # `video_question_index`
         })
+
 
     # Ensure the output directory exists
     os.makedirs(os.path.dirname(export_path), exist_ok=True)
