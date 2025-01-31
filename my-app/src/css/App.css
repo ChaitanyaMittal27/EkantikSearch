@@ -4,3 +4,9 @@
     height: calc(100vh - 100px); /* Ensures it takes full viewport height */
     overflow-y: auto; /* Enables scrolling */
 }
+
+body {
+    overflow: hidden; /* Prevents external scroll */
+    margin: 0;
+    padding: 0;
+}
