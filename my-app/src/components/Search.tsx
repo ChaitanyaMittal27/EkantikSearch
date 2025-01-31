@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../CSS/Search.css";
-import { processSearch } from "../controller"; // Handles transliteration & results fetching
+import { processSearch } from "../controller"; // Handles transliteration & search API call
 
 const Search: React.FC = () => {
     const [query, setQuery] = useState("");
