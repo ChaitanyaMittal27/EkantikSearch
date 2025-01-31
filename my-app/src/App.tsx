@@ -4,6 +4,7 @@ import Search from "./components/Search";
 import Results from "./components/Results";
 import About from "./components/About";
 import Footer from "./components/Footer";
+import AllQuestions from "./components/AllQuestions";
 import "./CSS/App.css";
 
 const App: React.FC = () => {
@@ -15,6 +16,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<Search />} />
                     <Route path="/results" element={<Results />} />
                     <Route path="/about" element={<About />} />
+                    <Route path="/all" element={<AllQuestions />} />
                 </Routes>
             </div>
             <Footer lastUpdated="Video 8000 on 2025-01-25" onUpdate={() => alert("Updating database...")} />
