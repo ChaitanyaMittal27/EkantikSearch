@@ -1,57 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap');
+
+/* Page Container */
 .all-questions-container {
-    max-width: 80%;
-    margin: 20px auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 110px;
+    text-align: center;
 }
 
-.page-title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+/* Page Title */
+.all-questions-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
     font-weight: bold;
+    color: #B8860B; /* Muted Gold */
+    margin-bottom: 20px;
 }
 
-.loading-text {
-    text-align: center;
-    font-size: 18px;
-    color: #888;
+/* Table Container (Scrollable) */
+.table-container {
+    max-width: 90%;
+    margin: auto;
+    overflow-x: auto;
+    max-height: 70vh; /* Prevents full-page overflow */
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Styled Table */
 .questions-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    background: white;
 }
 
-.questions-table th,
+/* Table Header */
+.questions-table thead {
+    background: #1A2B48; /* Dark Blue */
+    color: #FFD700; /* Gold */
+    font-size: 18px;
+}
+
+/* Table Headers */
+.questions-table th {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #FFD700;
+}
+
+/* Table Rows */
+.questions-table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: background 0.2s ease-in-out;
+}
+
+/* Alternating Row Colors */
+.questions-table tbody tr:nth-child(even) {
+    background: #FAF3E0;
+}
+
+/* Row Hover Effect */
+.questions-table tbody tr:hover {
+    background: #E6CCAE;
+}
+
+/* Table Data */
 .questions-table td {
-    border: 1px solid #ddd;
     padding: 12px;
     text-align: left;
 }
 
-.questions-table th {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-}
-
-.questions-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.questions-table tr:hover {
-    background-color: #d3e3fc;
-}
-
+/* Clickable Links */
 .questions-table td a {
-    color: #007bff;
+    color: #1A2B48;
+    font-weight: bold;
     text-decoration: none;
 }
 
 .questions-table td a:hover {
-    text-decoration: underline;
+    color: blue;
 }
+
+/* Instructions */
+.instructions {
+    font-size: 16px;
+    color: #5A3E1B;
+    margin-bottom: 15px;
+}
+

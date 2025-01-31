@@ -1,78 +1,102 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap');
-/* Spiritual Header with Soft Glow */
+
+/* Header Styling */
 .header {
-    background: linear-gradient(to bottom, #E8D8C4, #D5C1A3);
+    background: #121C2B; /* Dark navy */
+    padding: 10px 0;
     text-align: center;
-    padding: px 0;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    margin-top: 0px;
 }
 
-/* Elegant Spiritual Font */
+
+.header.shrink {
+    padding: 0;
+    height: 50px; /* Ensures it doesn't take unnecessary space */
+    overflow: hidden;
+}
+
+
+.header.shrink .title {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+}
+
+
+/* Title Styling */
 .title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 46px;
+    font-size: 38px;
     font-weight: 600;
     letter-spacing: 1px;
-    color: #7A3E30; /* Deep brown for warmth */
+    color: #FFD700; /* Gold */
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 10px;
-    margin-top: 15px;
+    margin-bottom: 5px;
+    transition: opacity 0.3s ease-in-out;
 }
 
-/* Navigation Tabs */
+/* Hide title when scrolling */
+.header.shrink .title {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Navigation Bar */
+.nav-tabs {
+    width: 100%;
+    background: #1A2B48; /* Muted Dark Blue */
+    border-top: 2px solid #FFD700;
+    border-bottom: 2px solid #FFD700;
+    transition: all 0.3s ease-in-out;
+    padding: 5px;
+    margin-bottom: 0;
+}
+
+/* Fixed Navigation Bar when scrolled */
+.header.shrink .nav-tabs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Navigation Items */
 .nav-tabs ul {
     list-style: none;
     display: flex;
     justify-content: center;
-    gap: 25px;
-    padding: 10px 0;
+    gap: 20px;
+    padding: 8px 0;
     margin: 0;
-    background: #E29538; /* Saffron Orange */
-    border-top: 2px solid #D17D35;
-    border-bottom: 2px solid #D17D35;
 }
 
 /* Navigation Links */
-.nav-tabs ul li {
-    display: inline;
-}
-
 .nav-tabs ul li a {
     text-decoration: none;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
-    color: #5A3E1B;
-    padding: 12px 18px;
-    transition: all 0.3s ease-in-out;
-    border-radius: 8px;
-}
-
-.nav-tabs ul li a:hover {
-    background: #D17D35;
-    color: white;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Language Toggle Button */
-.lang-button {
-    background: transparent;
-    border: 2px solid #5A3E1B;
-    padding: 6px 12px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #5A3E1B;
-    cursor: pointer;
+    color: #B0C4DE; /* Light Steel Blue */
+    padding: 10px 15px;
     transition: all 0.3s ease-in-out;
     border-radius: 5px;
 }
 
-.lang-button:hover {
-    background: #D17D35;
-    color: white;
+/* Navigation Hover */
+.nav-tabs ul li a:hover {
+    background: #FFD700;
+    color: #121C2B;
+    box-shadow: 0px 4px 8px rgba(255, 215, 0, 0.2);
 }
 
+/* Active Tab */
+.nav-tabs ul li a.active {
+    background: #B8860B; /* Darker Gold */
+    color: white;
+    border-radius: 5px;
+}

@@ -1,58 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import "../css/AllQuestions.css";
+
+interface QuestionData {
+    id: number;
+    question: string;
+    video_url: string;
+    timestamp: string;
+    video_date: string;
+}
 
 const AllQuestions: React.FC = () => {
-    const [questions, setQuestions] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [questions, setQuestions] = useState<QuestionData[]>([]);
 
-    // Fetch all questions from `public/all.json`
     useEffect(() => {
         fetch("/all.json")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setQuestions(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("❌ Error fetching questions:", error);
-                setLoading(false);
-            });
+            .then((response) => response.json())
+            .then((data) => setQuestions(data))
+            .catch((error) => console.error("Error fetching questions:", error));
     }, []);
+
+    // Function to format date to DD-MM-YYYY
+    const formatDate = (dateStr: string) => {
+        const [year, month, day] = dateStr.split("-");
+        return `${day}-${month}-${year}`;
+    };
 
     return (
         <div className="all-questions-container">
-            <h1 className="page-title">📜 All Questions (Debug View)</h1>
+            <h1 className="all-questions-title">All Questions Archive</h1>
+            <p className="instructions">Click on a question to jump to that part of the video.</p>
 
-            {loading ? (
-                <p className="loading-text">📡 Loading data...</p>
-            ) : (
+            <div className="table-container">
                 <table className="questions-table">
                     <thead>
                         <tr>
-                            <th>Time</th>
                             <th>Question</th>
-                            <th>Video</th>
-                            <th>Watch</th>
+                            <th>Video Date</th>
+                            <th>Timestamp</th>                            
                         </tr>
                     </thead>
                     <tbody>
-                        {questions.map((q, index) => (
-                            <tr key={index}>
-                                <td>{q.timestamp}</td>
-                                <td>{q.question}</td>
-                                <td>{q.video_title}</td>
-                                <td>
-                                    <a href={q.video_url} target="_blank" rel="noopener noreferrer">▶ Watch</a>
-                                </td>
-                            </tr>
-                        ))}
+                        {questions.map((q) => {
+                            // Convert timestamp to clickable YouTube link
+                            const videoLink = `${q.video_url}&t=${q.timestamp.replace(":", "m")}s`;
+
+                            return (
+                                <tr key={q.id}>
+                                    <td>
+                                        <a href={videoLink} target="_blank" rel="noopener noreferrer">
+                                            {q.question}
+                                        </a>
+                                    </td>
+                                    <td>{formatDate(q.video_date)}</td>
+                                    <td>{q.timestamp}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
-            )}
+            </div>
         </div>
     );
 };
