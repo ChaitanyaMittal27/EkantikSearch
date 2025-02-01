@@ -30,11 +30,15 @@ const convertTimestampToSeconds = (timestamp: string): number => {
  * Constructs a jump URL by appending the timestamp parameter.
  * If the videoLink already has query parameters, it appends using '&'; otherwise, '?'.
  */
-const constructJumpURL = (videoLink: string, timestamp: string): string => {
-  const seconds = convertTimestampToSeconds(timestamp);
-  const separator = videoLink.includes("?") ? "&" : "?";
-  return `${videoLink}${separator}t=${seconds}s`;
-};
+const constructJumpURL = (videoLink: string, timestamp?: string): string => {
+    if (!timestamp) return videoLink; // No timestamp? Return original URL
+  
+    const seconds = convertTimestampToSeconds(timestamp);
+    if (seconds === 0) return videoLink; // Invalid timestamp? Return original URL
+  
+    const separator = videoLink.includes("?") ? "&" : "?";
+    return `${videoLink}${separator}t=${seconds}s`;
+  };
 
 const Results: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -45,21 +49,25 @@ const Results: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchQuery.trim()) {
+    let hasFetched = false; // Prevents duplicate calls in React Strict Mode
+  
+    if (searchQuery.trim() && results.length === 0 && !hasFetched) {
+      //DEBUG: console.log("🔍 Fetching results for:", searchQuery);
+      hasFetched = true; // Mark as fetched
+  
       fetchResults(searchQuery)
-        .then((data: Result[]) => {
+        .then((data) => {
           setResults(data);
           setLoading(false);
         })
-        .catch((err: Error) => {
+        .catch((err) => {
           setError(err.message);
           setLoading(false);
         });
-    } else {
-      setLoading(false);
     }
   }, [searchQuery]);
-
+  
+  
   return (
     <div className="results-container">
       <h2>Search Results for: "{searchQuery}"</h2>
@@ -86,8 +94,9 @@ const Results: React.FC = () => {
             <tr>
               <th>Question</th>
               <th>Ekantik #</th>
+              <th>Timestamp</th>
               <th>Date</th>
-              <th>Video</th>
+              <th>Go to Video</th>
             </tr>
           </thead>
           <tbody>
@@ -98,14 +107,15 @@ const Results: React.FC = () => {
                 : r.video_url;
               return (
                 <tr key={r.id}>
-                  <td>{r.question}</td>
-                  <td>{r.video_index}</td>
-                  <td>{r.video_date}</td>
-                  <td>
-                    <a href={finalVideoURL} target="_blank" rel="noopener noreferrer">
-                      Watch
-                    </a>
-                  </td>
+                    <td>{r.question}</td>
+                    <td>{r.video_index}</td>
+                    <td>{r.timestamp || "N/A"}</td>
+                    <td>{r.video_date}</td>
+                    <td>
+                        <a href={finalVideoURL} target="_blank" rel="noopener noreferrer">
+                        Watch
+                        </a>
+                    </td>
                 </tr>
               );
             })}

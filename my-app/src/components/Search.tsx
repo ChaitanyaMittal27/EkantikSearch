@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../src/CSS/Search.css";
-import { generateSearchVariants } from "../controller";
+import { fetchResults } from "../controller";
 
 // A list of custom suggested questions.
 const customSuggestions: string[] = [
@@ -20,8 +20,8 @@ const Search: React.FC = () => {
   // When search is triggered (either by clicking the search button or pressing Enter).
   const handleSearch = () => {
     if (!query.trim()) return;
-    // Process search (currently logs/transcribes)
-    generateSearchVariants(query);
+    //DEBUG: console.log("🔍 Triggering search for:", query);
+    //fetchResults(query);
     // Navigate to results page with the search query as a URL parameter.
     navigate(`/results?search=${encodeURIComponent(query)}`);
   };

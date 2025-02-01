@@ -1,128 +1,143 @@
 // src/controller.ts
 import Fuse from 'fuse.js';
 
-export interface Question {
-  id: number;
-  question: string;  // Note: our minimal JSON uses "question"
-}
+// Load environment variables (Ensure dotenv is set up in your project)
+const MICROSOFT_TRANSLATOR_KEY = import.meta.env.VITE_MICROSOFT_AZURE_KEY;
+const MICROSOFT_TRANSLATOR_REGION = import.meta.env.VITE_MICROSOFT_TRANSLATOR_REGION || "centralindia";
+const MICROSOFT_TRANSLATOR_ENDPOINT = "https://api.cognitive.microsofttranslator.com";
+const SEARCH_THRESHOLD = 0.21;
 
-export interface Result {
-  id: number;
-  question: string;  // Ensure the full JSON uses "question" as well.
-  video_url: string;
-  video_date: string;
-  video_index: number;
-}
+/**
+ * isHindiText:
+ * Detects if the query is already in Hindi (Devanagari script).
+ * If text contains characters in the Unicode range \u0900-\u097F, it is considered Hindi.
+ */
+export const isHindiText = (query: string): boolean => {
+  const hindiRegex = /[\u0900-\u097F]/;
+  return hindiRegex.test(query);
+};
 
 /**
  * transcribeQuery:
- * Asynchronously processes/transcribes the search query.
- * Future: integrate the Microsoft Translator API's transliteration endpoint.
+ * Calls Microsoft's Transliteration API to convert English words into Hindi script.
+ * Only runs if the input is NOT already in Hindi.
  */
 export const transcribeQuery = async (query: string): Promise<string> => {
-  // Placeholder: Here you would call Microsoft’s transliteration API.
-  // Example (pseudo-code):
-  // const response = await fetch(MICROSOFT_TRANSLITERATION_ENDPOINT, { ... });
-  // const data = await response.json();
-  // return data.transliteratedText;
-  return query;  // For now, simply return the original query.
+  if (isHindiText(query)) return query; // Skip API call if already Hindi
+
+  //DEBUG: console.log("Transcribing query:", query);
+
+  try {
+    const response = await fetch(`${MICROSOFT_TRANSLATOR_ENDPOINT}/transliterate?api-version=3.0&language=hi&fromScript=latn&toScript=deva`, {
+      method: "POST",
+      headers: {
+        "Ocp-Apim-Subscription-Key": MICROSOFT_TRANSLATOR_KEY,
+        "Ocp-Apim-Subscription-Region": MICROSOFT_TRANSLATOR_REGION,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([{ "Text": query }]),
+    });
+
+    const data = await response.json();
+    return data[0]?.text || query; // Return transliterated text or fallback
+  } catch (error) {
+    console.error("Error in transliteration:", error);
+    return query;
+  }
 };
 
 /**
  * translateToHindi:
- * Asynchronously translates the query to Hindi.
- * Future: integrate Microsoft Translator Text API's translation endpoint.
+ * Calls Microsoft's Translation API to convert an English query into Hindi.
+ * Only runs if the input is NOT already in Hindi.
  */
 export const translateToHindi = async (query: string): Promise<string> => {
-  // Placeholder: Call Microsoft’s translation API.
-  // Example (pseudo-code):
-  // const response = await fetch(MICROSOFT_TRANSLATION_ENDPOINT, { ... });
-  // const data = await response.json();
-  // return data.translatedText;
-  return query;  // For now, simply return the original query.
+  if (isHindiText(query)) return query; // Skip API call if already Hindi
+
+  // DEBUG: console.log("Translating query to Hindi:", query);
+
+  try {
+    const response = await fetch(`${MICROSOFT_TRANSLATOR_ENDPOINT}/translate?api-version=3.0&to=hi`, {
+      method: "POST",
+      headers: {
+        "Ocp-Apim-Subscription-Key": MICROSOFT_TRANSLATOR_KEY,
+        "Ocp-Apim-Subscription-Region": MICROSOFT_TRANSLATOR_REGION,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([{ "Text": query }]),
+    });
+
+    const data = await response.json();
+    return data[0]?.translations[0]?.text || query; // Return translated text or fallback
+  } catch (error) {
+    console.error("Error in translation:", error);
+    return query;
+  }
 };
 
 /**
  * generateSearchVariants:
- * Given the original query string, returns an array of variants.
- * Variants include:
- *   - the original query (English),
- *   - the transcribed version,
- *   - the translated version.
+ * Given the original query string, generates an array of search variations:
+ *   - Original query (English or Hindi)
+ *   - Transliterated version (English words in Hindi script)
+ *   - Translated version (Fully translated Hindi sentence)
+ * Avoids unnecessary API calls if the query is already in Hindi.
  */
 export const generateSearchVariants = async (query: string): Promise<string[]> => {
-  const englishQuery = query;
+    //DEBUG: console.log("🔍 Called generateSearchVariants() for query:", query);
+    const englishQuery = query;
   const transcribedQuery = await transcribeQuery(query);
   const translatedQuery = await translateToHindi(query);
-  // Remove duplicates by using a Set.
-  console.log("Query variants:", [englishQuery, transcribedQuery, translatedQuery]);
-  return Array.from(new Set([englishQuery, transcribedQuery, translatedQuery]));
+  console.log("Search Variants:", [englishQuery, transcribedQuery, translatedQuery]);
+  return Array.from(new Set([englishQuery, transcribedQuery, translatedQuery])); // Remove duplicates
 };
 
 /**
  * searchQuestions:
- * Searches the minimal questions list (from '/all_qs.json') using Fuse.js.
- * For each query variant, it performs fuzzy matching on the 'question' field,
- * combines the matching IDs (avoiding duplicates), and returns them.
+ * Searches the minimal question list (from '/all_qs.json') using Fuse.js.
  */
 export const searchQuestions = async (query: string): Promise<number[]> => {
-  if (!query.trim()) {
-    return [];
-  }
-  
-  // Generate the query variants.
+    //DEBUG: console.log("🔍 Called searchQuestions() for query:", query);
+    if (!query.trim()) return [];
+
   const variants = await generateSearchVariants(query);
-  
-  // Fetch the minimal questions list from public/all_qs.json.
   const qsResponse = await fetch("/all_qs.json");
-  const allQuestions: Question[] = await qsResponse.json();
-  
-  // Configure Fuse.js: we search the "question" field.
+  const allQuestions: { id: number; question: string }[] = await qsResponse.json();
+
   const fuseOptions = {
     keys: ['question'],
-    threshold: 0.2,  // Adjust as needed for fuzziness.
+    threshold: SEARCH_THRESHOLD,
   };
-  
+
   const matchingIds = new Set<number>();
-  
-  // Run Fuse.js search for each variant.
   variants.forEach((variant) => {
     const fuse = new Fuse(allQuestions, fuseOptions);
     const fuseResults = fuse.search(variant);
     fuseResults.forEach(result => matchingIds.add(result.item.id));
   });
-  
+
   return Array.from(matchingIds);
 };
 
 /**
  * handleSearch:
- * Uses searchQuestions to retrieve matching question IDs from the minimal list,
- * then fetches the full results from '/all.json' and filters by those IDs.
+ * Uses searchQuestions to retrieve matching question IDs, then fetches
+ * the full results from '/all.json' and filters by those IDs.
  */
-export const handleSearch = async (query: string): Promise<Result[]> => {
-  // Get matching question IDs.
+export const handleSearch = async (query: string): Promise<{ id: number, question: string, video_url: string, video_date: string, video_index: number }[]> => {
   const matchingIds = await searchQuestions(query);
-  
-  // Fetch the full data from public/all.json.
   const fullResponse = await fetch("/all.json");
-  const fullResults: Result[] = await fullResponse.json();
-  
-  // Filter full results based on matching IDs.
-  const processedResults = fullResults.filter(item =>
-    matchingIds.includes(item.id)
-  );
-  
-  console.log("Processed results:", processedResults);
-  return processedResults;
+  const fullResults = await fullResponse.json();
+  return fullResults.filter(item => matchingIds.includes(item.id));
 };
 
 /**
  * fetchResults:
- * For backward compatibility with view code, wraps handleSearch.
+ * Wraps handleSearch to ensure compatibility with Results.tsx.
  */
-export const fetchResults = async (query: string): Promise<Result[]> => {
-  try {
+export const fetchResults = async (query: string): Promise<{ id: number, question: string, video_url: string, video_date: string, video_index: number }[]> => {
+    //DEBUG: console.log("🔍 Called fetchResults() for query:", query);
+    try {
     return await handleSearch(query);
   } catch (error) {
     console.error("Error fetching results:", error);
