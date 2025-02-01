@@ -1,56 +1,71 @@
-import { useState } from "react";
-import "../CSS/Search.css";
-import { processSearch } from "../controller"; // Handles transliteration & search API call
+// src/components/Search.tsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../src/CSS/Search.css";
+import { generateSearchVariants } from "../controller";
+
+// A list of custom suggested questions.
+const customSuggestions: string[] = [
+  "धर्म क्या है?",
+  "कर्मयोग कैसे करें?",
+  "गुरु का महत्व क्या है?",
+  "श्री कृष्ण की भक्ति क्या है?",
+  "अहंकार से कैसे बचें?"
+];
 
 const Search: React.FC = () => {
-    const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
+  const navigate = useNavigate();
 
-    // TODO: Replace with API-based popular questions later
-    const popularQuestions = [
-        "धर्म क्या है?",
-        "कर्मयोग कैसे करें?",
-        "गुरु का महत्व क्या है?",
-        "श्री कृष्ण के अनुसार भक्ति क्या है?",
-        "अहंकार से कैसे बचें?",
-    ];
+  // When search is triggered (either by clicking the search button or pressing Enter).
+  const handleSearch = () => {
+    if (!query.trim()) return;
+    // Process search (currently logs/transcribes)
+    generateSearchVariants(query);
+    // Navigate to results page with the search query as a URL parameter.
+    navigate(`/results?search=${encodeURIComponent(query)}`);
+  };
 
-    // Handle search input submission
-    const handleSearch = () => {
-        if (query.trim()) {
-            processSearch(query); // Send query to backend
-        }
-    };
+  // Handle Enter key press.
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
-    // Clicking a popular question auto-fills & searches
-    const handlePopularClick = (question: string) => {
-        setQuery(question);
-        processSearch(question);
-    };
+  // When a suggestion is clicked, update the query and trigger search.
+  const handleSuggestionClick = (suggestion: string) => {
+    setQuery(suggestion);
+    handleSearch();
+  };
 
-    return (
-        <div className="search-container">
-            <div className="search-wrapper">
-                <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search..."
-                    className="search-bar"
-                />
-                <button className="search-button" onClick={handleSearch}>🔍</button>
-            </div>
-
-            <h2 className="popular-title">Popular Questions</h2>
-
-            <ul className="popular-list">
-                {popularQuestions.map((question, index) => (
-                    <li key={index} onClick={() => handlePopularClick(question)} className="popular-item">
-                        {question}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+  return (
+    <div className="search-container">
+      <div className="search-wrapper">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Enter search query..."
+          className="search-bar"
+        />
+        <button className="search-button" onClick={handleSearch}>
+          🔍
+        </button>
+      </div>
+      <div className="suggestions">
+        <p>Suggested Questions:</p>
+        <ul className="suggestions-list">
+          {customSuggestions.map((s, index) => (
+            <li key={index} className="suggestion-item" onClick={() => handleSuggestionClick(s)}>
+              {s}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 };
 
 export default Search;

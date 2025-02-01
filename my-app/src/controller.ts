@@ -1,53 +1,131 @@
-/**
- * Controller module for handling API calls between React frontend and Flask backend.
- * Ensures input validation, API communication, and redirection for search results.
- */
+// src/controller.ts
+import Fuse from 'fuse.js';
 
-import { Question, SearchResponse, UpdateResponse } from "./types";
+export interface Question {
+  id: number;
+  question: string;  // Note: our minimal JSON uses "question"
+}
+
+export interface Result {
+  id: number;
+  question: string;  // Ensure the full JSON uses "question" as well.
+  video_url: string;
+  video_date: string;
+  video_index: number;
+}
 
 /**
- * Processes the search input by validating it and calling the Flask API.
- * - Calls Flask API for transliteration and search processing.
- * - Redirects to the results page after receiving a valid response.
- * 
- * @param query - The search text input by the user.
+ * transcribeQuery:
+ * Asynchronously processes/transcribes the search query.
+ * Future: integrate the Microsoft Translator API's transliteration endpoint.
  */
-export const processSearch = async (query: string) => {
-    try {
-        if (!query.trim()) throw new Error("Query cannot be empty");
-        
-        // Call Flask API to process the search query
-        const response = await fetch(`http://localhost:5000/search?query=${encodeURIComponent(query)}`);
-        if (!response.ok) throw new Error("Failed to process search");
-        
-        const results = await response.json();
-        
-        // Redirect to results page with the search query (React will fetch results on this page)
-        window.location.href = `/results?search=${encodeURIComponent(query)}`;
-    } catch (error) {
-        console.error("Search processing failed:", error);
-    }
+export const transcribeQuery = async (query: string): Promise<string> => {
+  // Placeholder: Here you would call Microsoft’s transliteration API.
+  // Example (pseudo-code):
+  // const response = await fetch(MICROSOFT_TRANSLITERATION_ENDPOINT, { ... });
+  // const data = await response.json();
+  // return data.transliteratedText;
+  return query;  // For now, simply return the original query.
 };
 
 /**
- * Fetches search results from the backend.
- * - This function is called by the Results Page (`Results.tsx`) after redirection.
- * - It sends a request to Flask and retrieves a list of matching questions.
- * 
- * @param query - The search text (expected to be already transliterated in Hindi).
- * @returns List of matching questions from the backend.
+ * translateToHindi:
+ * Asynchronously translates the query to Hindi.
+ * Future: integrate Microsoft Translator Text API's translation endpoint.
  */
-export const fetchResults = async (query: string) => {
-    try {
-        console.log(`Fetching results for: ${query}`);
-        
-        // Call Flask API to retrieve search results
-        const response = await fetch(`http://localhost:5000/search?query=${encodeURIComponent(query)}`);
-        if (!response.ok) throw new Error("Failed to fetch results");
-        
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching results:", error);
-        return [];
-    }
+export const translateToHindi = async (query: string): Promise<string> => {
+  // Placeholder: Call Microsoft’s translation API.
+  // Example (pseudo-code):
+  // const response = await fetch(MICROSOFT_TRANSLATION_ENDPOINT, { ... });
+  // const data = await response.json();
+  // return data.translatedText;
+  return query;  // For now, simply return the original query.
+};
+
+/**
+ * generateSearchVariants:
+ * Given the original query string, returns an array of variants.
+ * Variants include:
+ *   - the original query (English),
+ *   - the transcribed version,
+ *   - the translated version.
+ */
+export const generateSearchVariants = async (query: string): Promise<string[]> => {
+  const englishQuery = query;
+  const transcribedQuery = await transcribeQuery(query);
+  const translatedQuery = await translateToHindi(query);
+  // Remove duplicates by using a Set.
+  console.log("Query variants:", [englishQuery, transcribedQuery, translatedQuery]);
+  return Array.from(new Set([englishQuery, transcribedQuery, translatedQuery]));
+};
+
+/**
+ * searchQuestions:
+ * Searches the minimal questions list (from '/all_qs.json') using Fuse.js.
+ * For each query variant, it performs fuzzy matching on the 'question' field,
+ * combines the matching IDs (avoiding duplicates), and returns them.
+ */
+export const searchQuestions = async (query: string): Promise<number[]> => {
+  if (!query.trim()) {
+    return [];
+  }
+  
+  // Generate the query variants.
+  const variants = await generateSearchVariants(query);
+  
+  // Fetch the minimal questions list from public/all_qs.json.
+  const qsResponse = await fetch("/all_qs.json");
+  const allQuestions: Question[] = await qsResponse.json();
+  
+  // Configure Fuse.js: we search the "question" field.
+  const fuseOptions = {
+    keys: ['question'],
+    threshold: 0.2,  // Adjust as needed for fuzziness.
+  };
+  
+  const matchingIds = new Set<number>();
+  
+  // Run Fuse.js search for each variant.
+  variants.forEach((variant) => {
+    const fuse = new Fuse(allQuestions, fuseOptions);
+    const fuseResults = fuse.search(variant);
+    fuseResults.forEach(result => matchingIds.add(result.item.id));
+  });
+  
+  return Array.from(matchingIds);
+};
+
+/**
+ * handleSearch:
+ * Uses searchQuestions to retrieve matching question IDs from the minimal list,
+ * then fetches the full results from '/all.json' and filters by those IDs.
+ */
+export const handleSearch = async (query: string): Promise<Result[]> => {
+  // Get matching question IDs.
+  const matchingIds = await searchQuestions(query);
+  
+  // Fetch the full data from public/all.json.
+  const fullResponse = await fetch("/all.json");
+  const fullResults: Result[] = await fullResponse.json();
+  
+  // Filter full results based on matching IDs.
+  const processedResults = fullResults.filter(item =>
+    matchingIds.includes(item.id)
+  );
+  
+  console.log("Processed results:", processedResults);
+  return processedResults;
+};
+
+/**
+ * fetchResults:
+ * For backward compatibility with view code, wraps handleSearch.
+ */
+export const fetchResults = async (query: string): Promise<Result[]> => {
+  try {
+    return await handleSearch(query);
+  } catch (error) {
+    console.error("Error fetching results:", error);
+    throw error;
+  }
 };

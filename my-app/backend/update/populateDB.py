@@ -16,8 +16,9 @@ import datetime
 
 # Define paths
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-ASSETS_PATH = os.path.join(BASE_DIR, "../../public/all.json")  # Frontend JSON storage
-ARCHIVE_PATH = os.path.join(BASE_DIR, "../db/db_archives", f"all_{datetime.datetime.now().strftime('%Y%m%d')}.json")  # Archive storage
+DB_PUBLIC_PATH = os.path.join(BASE_DIR, "../../public/all.json")  # Frontend JSON storage
+DB_QUES_PUBLIC_PATH = os.path.join(BASE_DIR, "../../public/all_qs.json")  # Frontend JSON storage
+DB_ARCHIVE_PATH = os.path.join(BASE_DIR, "../db/db_archives", f"all_{datetime.datetime.now().strftime('%Y%m%d')}.json")  # Archive storage
 
 
 def run_command(command):
@@ -41,9 +42,12 @@ if __name__ == "__main__":
     run_command("python update/setupAndPopulateDB.py")
 
     # Step 4: Export the database to JSON for frontend
-    run_command(f"python db/export_to_json.py {ASSETS_PATH}")
+    run_command(f"python db/export_to_json.py {DB_PUBLIC_PATH}")
 
     # Step 5: Archive the exported JSON for historical backups
-    run_command(f"python db/export_to_json.py {ARCHIVE_PATH}")
+    run_command(f"python db/export_to_json.py {DB_ARCHIVE_PATH}")
+
+    # Step 6: Export the questions to JSON for frontend
+    run_command(f"python db/export_qs_to_json.py {DB_QUES_PUBLIC_PATH}")
 
     print("✅ Database update and export completed successfully!")

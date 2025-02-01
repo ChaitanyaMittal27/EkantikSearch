@@ -1,78 +1,74 @@
-/* Search Page Layout */
-.search-container {
-    text-align: center;
+:root {
+    --primary-bg: #ffffff;
+    --primary-color: #333333;
+    --accent-color: #007bff;
+    --border-color: #dddddd;
+  }
+  
+  .search-container {
     padding: 20px;
-    width: 80%;
-    margin: auto;
-}
-
-/* Search Bar and Button */
-.search-wrapper {
+    padding-top: 120px;
+    background-color: var(--primary-bg);
+    color: var(--primary-color);
+    margin-top: 60px; /* Adjust as needed to provide space for the header */
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .search-wrapper {
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 60%;
-    margin: auto;
-    border: 2px solid #B68D40;
-    border-radius: 20px;
-    padding: 4px;
-    background: white;
-}
-
-/* Search Input */
-.search-bar {
+    margin-bottom: 15px;
+  }
+  
+  .search-bar {
     flex: 1;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+  }
+  
+  .search-button {
+    padding: 12px;
+    font-size: 1rem;
+    margin-left: 10px;
+    background-color: var(--accent-color);
+    color: #fff;
     border: none;
-    padding: 10px;
-    font-size: 18px;
-    border-radius: 20px;
-    outline: none;
-}
-
-/* Search Button */
-.search-button {
-    background: transparent;
-    border: none;
-    font-size: 22px;
+    border-radius: 4px;
     cursor: pointer;
-    padding: 10px;
-    transition: all 0.3s;
-}
-
-.search-button:hover {
-    color: #D17D35;
-}
-
-/* Section Title */
-.popular-title {
-    font-size: 22px;
-    color: #5A3E1B;
+    transition: background-color 0.2s ease;
+  }
+  
+  .search-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .suggestions {
     margin-top: 20px;
-    text-align: center;
+  }
+  
+  .suggestions p {
     font-weight: bold;
-}
-
-/* Popular Questions List */
-.popular-list {
+    margin-bottom: 8px;
+  }
+  
+  .suggestions-list {
     list-style: none;
     padding: 0;
-    max-width: 60%;
-    margin: 20px auto;
-}
-
-/* Individual Popular Question */
-.popular-item {
-    padding: 12px;
-    background: #FAF3E0;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    font-size: 18px;
+    margin: 0;
+  }
+  
+  .suggestion-item {
+    padding: 8px;
+    border-bottom: 1px solid var(--border-color);
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
-    text-align: center;
-}
-
-.popular-item:hover {
-    background: #E29538;
-    color: white;
-}
+    transition: background-color 0.2s ease;
+  }
+  
+  .suggestion-item:hover {
+    background-color: #f0f0f0;
+  }
+  
