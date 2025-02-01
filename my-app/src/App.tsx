@@ -6,7 +6,6 @@ import Results from "./components/Results";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import AllQuestions from "./components/AllQuestions";
-import "./CSS/App.css";
 
 const App: React.FC = () => {
     return (
