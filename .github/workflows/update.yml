@@ -13,22 +13,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Debug Print Working Directory & List Files
+        run: |
+          echo "📂 Current Directory: $(pwd)"
+          ls -la
+          echo "📂 Checking my-app/backend/update/"
+          ls -la my-app/backend/update/
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: Debug List Files Before Running
-        run: |
-          echo "📂 Current Directory: $(pwd)"
-          ls -la my-app/backend/update/
-
       - name: Run Database Update Script
         id: update_db
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}  # Use GitHub Secret
+        working-directory: my-app/backend
         run: |
-          if python3 my-app/backend/update/populateDB.py; then
+          if python update/populateDB.py; then
             echo "✅ Database update successful" 
             echo "update_status=success" >> $GITHUB_ENV
           else
