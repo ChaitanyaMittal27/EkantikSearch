@@ -49,46 +49,28 @@ const Results: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let hasFetched = false; // Prevents duplicate calls in React Strict Mode
-  
-    if (searchQuery.trim() && results.length === 0 && !hasFetched) {
-      //DEBUG: console.log("🔍 Fetching results for:", searchQuery);
-      hasFetched = true; // Mark as fetched
-  
+    if (searchQuery.trim()) {
       fetchResults(searchQuery)
-        .then((data) => {
+        .then((data: Result[]) => {
           setResults(data);
           setLoading(false);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           setError(err.message);
           setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, [searchQuery]);
   
   
   return (
     <div className="results-container">
-      <h2>Search Results for: "{searchQuery}"</h2>
-      {loading && <p>Loading...</p>}
-      {!loading && error && (
-        <div className="error-section">
-          <p className="error-message">Search failed: {error}</p>
-          <button className="retry-button" onClick={() => navigate("/")}>
-            Search Again
-          </button>
-        </div>
-      )}
-      {!loading && !error && results.length === 0 && (
-        <div className="error-section">
-          <p className="error-message">No results found.</p>
-          <button className="retry-button" onClick={() => navigate("/")}>
-            Search Again
-          </button>
-        </div>
-      )}
-      {!loading && results.length > 0 && (
+      <h2 className="all-questions-title">Search Results</h2>
+      <p className="instructions">Click on a question to jump to that part of the video.</p>
+
+      <div className="table-container">
         <table className="results-table">
           <thead>
             <tr>
@@ -96,32 +78,29 @@ const Results: React.FC = () => {
               <th>Ekantik #</th>
               <th>Timestamp</th>
               <th>Date</th>
-              <th>Go to Video</th>
+              <th>Video</th>
             </tr>
           </thead>
           <tbody>
             {results.slice(0, 30).map((r) => {
-              // If a timestamp is provided, construct the jump URL.
-              const finalVideoURL = r.timestamp
-                ? constructJumpURL(r.video_url, r.timestamp)
-                : r.video_url;
+              const finalVideoURL = constructJumpURL(r.video_url, r.timestamp);
               return (
                 <tr key={r.id}>
-                    <td>{r.question}</td>
-                    <td>{r.video_index}</td>
-                    <td>{r.timestamp || "N/A"}</td>
-                    <td>{r.video_date}</td>
-                    <td>
-                        <a href={finalVideoURL} target="_blank" rel="noopener noreferrer">
-                        Watch
-                        </a>
-                    </td>
+                  <td>{r.question}</td>
+                  <td>{r.video_index}</td>
+                  <td>{r.timestamp || "N/A"}</td>
+                  <td>{r.video_date}</td>
+                  <td>
+                    <a href={finalVideoURL} target="_blank" rel="noopener noreferrer">
+                      Watch
+                    </a>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-      )}
+      </div>
     </div>
   );
 };

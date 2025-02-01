@@ -1,73 +1,127 @@
 :root {
-    --primary-bg: #ffffff;
-    --primary-color: #333333;
+    --primary-bg: #f7ebd6; /* Soft Beige Background */
+    --container-bg: #fffdf5; /* Slightly lighter container */
+    --primary-color: #2a2a2a;
     --accent-color: #007bff;
     --border-color: #dddddd;
-  }
-  
-  .results-container {
-    padding: 20px;
-    padding-top: 120px;
-    background-color: var(--primary-bg);
+    --gold-color: #b8860b;
+    --light-gold: #e6ccae;
+    --soft-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Background */
+body {
+    background: linear-gradient(to bottom, var(--primary-bg), #f3dfc1);
+}
+
+/* Main Container */
+.results-container {
+    padding: 40px;
+    padding-top: 150px;
+    background: var(--container-bg);
     color: var(--primary-color);
-    margin-top: 60px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .results-table {
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+    border-radius: 16px;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+    border: 2px solid #d4b27c;
+}
+
+/* Title */
+.all-questions-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--gold-color);
+    margin-bottom: 10px;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* Instructions */
+.instructions {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Table - Full Width */
+.results-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .results-table th,
-  .results-table td {
-    padding: 10px;
-    border: 1px solid var(--border-color);
+    background: white;
+    table-layout: auto;
+}
+
+/* Table Header */
+.results-table thead {
+    background: #1A2B48; /* Dark Blue */
+    color: #FFD700; /* Gold */
+    font-size: 18px;
+}
+
+/* Table Headers */
+.results-table th {
+    padding: 12px;
     text-align: left;
-  }
-  
-  .results-table th {
-    background-color: #f7f7f7;
-    cursor: pointer;
-  }
-  
-  .results-table th:hover {
-    background-color: #eaeaea;
-  }
-  
-  .results-table a {
-    color: var(--accent-color);
+    border-bottom: 2px solid #FFD700;
+    white-space: nowrap; /* Prevents wrapping */
+}
+
+/* Table Data */
+.results-table td {
+    padding: 12px;
+    text-align: left;
+    white-space: normal;
+}
+
+/* Alternating Row Colors */
+.results-table tbody tr:nth-child(even) {
+    background: #FAF3E0;
+}
+
+/* Row Hover Effect */
+.results-table tbody tr:hover {
+    background: #E6CCAE;
+}
+
+/* Clickable Links */
+.results-table td a {
+    color: #1A2B48;
+    font-weight: bold;
     text-decoration: none;
-  }
-  
-  .results-table a:hover {
-    text-decoration: underline;
-  }
-  
-  .error-section {
+}
+
+.results-table td a:hover {
+    color: blue;
+}
+
+/* Error Section */
+.error-section {
     text-align: center;
     margin-top: 20px;
-  }
-  
-  .error-message {
+}
+
+/* Error Message */
+.error-message {
     color: red;
-    margin-bottom: 10px;
-  }
-  
-  .retry-button {
-    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Retry Button */
+.retry-button {
+    padding: 12px 20px;
     background-color: var(--accent-color);
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .retry-button:hover {
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: var(--soft-shadow);
+}
+
+.retry-button:hover {
     background-color: #0056b3;
-  }
-  
+    transform: scale(1.05);
+}

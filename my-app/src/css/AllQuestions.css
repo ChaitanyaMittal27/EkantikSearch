@@ -2,9 +2,16 @@
 
 /* Page Container */
 .all-questions-container {
-    padding: 30px;
+    padding: 40px;
     margin-top: 110px;
     text-align: center;
+    max-width: 900px;
+    background: #fffdf5; /* Lightened container */
+    border-radius: 16px;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+    border: 2px solid #d4b27c; /* Soft Gold Border */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Page Title */
@@ -13,17 +20,25 @@
     font-size: 32px;
     font-weight: bold;
     color: #B8860B; /* Muted Gold */
+    margin-bottom: 10px;
+}
+
+/* Instructions */
+.instructions {
+    font-size: 18px;
+    color: #555;
     margin-bottom: 20px;
 }
 
 /* Table Container (Scrollable) */
 .table-container {
-    max-width: 90%;
+    max-width: 95%;
     margin: auto;
-    overflow-x: auto;
+    overflow-y: auto;
     max-height: 70vh; /* Prevents full-page overflow */
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background: white;
 }
 
 /* Styled Table */
@@ -45,6 +60,7 @@
     padding: 12px;
     text-align: left;
     border-bottom: 2px solid #FFD700;
+    white-space: nowrap; /* Prevent wrapping */
 }
 
 /* Table Rows */
@@ -67,6 +83,7 @@
 .questions-table td {
     padding: 12px;
     text-align: left;
+    white-space: normal; /* Allow multi-line text */
 }
 
 /* Clickable Links */
@@ -79,11 +96,3 @@
 .questions-table td a:hover {
     color: blue;
 }
-
-/* Instructions */
-.instructions {
-    font-size: 16px;
-    color: #5A3E1B;
-    margin-bottom: 15px;
-}
-

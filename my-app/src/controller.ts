@@ -5,7 +5,7 @@ import Fuse from 'fuse.js';
 const MICROSOFT_TRANSLATOR_KEY = import.meta.env.VITE_MICROSOFT_AZURE_KEY;
 const MICROSOFT_TRANSLATOR_REGION = import.meta.env.VITE_MICROSOFT_TRANSLATOR_REGION || "centralindia";
 const MICROSOFT_TRANSLATOR_ENDPOINT = "https://api.cognitive.microsofttranslator.com";
-const SEARCH_THRESHOLD = 0.21;
+const SEARCH_THRESHOLD = 0.24;
 
 /**
  * isHindiText:
@@ -128,7 +128,7 @@ export const handleSearch = async (query: string): Promise<{ id: number, questio
   const matchingIds = await searchQuestions(query);
   const fullResponse = await fetch("/all.json");
   const fullResults = await fullResponse.json();
-  return fullResults.filter(item => matchingIds.includes(item.id));
+  return fullResults.filter((item: { id: number; }) => matchingIds.includes(item.id));
 };
 
 /**
