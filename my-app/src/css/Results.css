@@ -1,85 +1,127 @@
-/* Container for results page */
+:root {
+    --primary-bg: #f7ebd6; /* Soft Beige Background */
+    --container-bg: #fffdf5; /* Slightly lighter container */
+    --primary-color: #2a2a2a;
+    --accent-color: #007bff;
+    --border-color: #dddddd;
+    --gold-color: #b8860b;
+    --light-gold: #e6ccae;
+    --soft-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Background */
+body {
+    background: linear-gradient(to bottom, var(--primary-bg), #f3dfc1);
+}
+
+/* Main Container */
 .results-container {
-    text-align: center;
-    padding: 20px;
-    width: 80%;
+    padding: 40px;
+    padding-top: 150px;
+    background: var(--container-bg);
+    color: var(--primary-color);
+    max-width: 900px;
     margin: auto;
+    text-align: center;
+    border-radius: 16px;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+    border: 2px solid #d4b27c;
 }
 
-/* Header text */
-.results-container h2 {
-    font-size: 24px;
-    color: #5A3E1B;
-    margin-bottom: 20px;
+/* Title */
+.all-questions-title {
+    font-size: 32px;
     font-weight: bold;
+    color: var(--gold-color);
+    margin-bottom: 10px;
+    font-family: 'Cormorant Garamond', serif;
 }
 
-/* Error message */
-.error-message {
-    color: red;
-    font-weight: bold;
-}
-
-/* No results message */
-.results-container p {
+/* Instructions */
+.instructions {
     font-size: 18px;
-    color: #5A3E1B;
+    color: #555;
+    margin-bottom: 20px;
 }
 
-/* Table styling */
+/* Table - Full Width */
 .results-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background: #FAF3E0; /* Light peach */
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background: white;
+    table-layout: auto;
 }
 
-/* Table header */
-.results-table thead th {
-    background: #C18452; /* Earthy brown */
-    color: white;
-    padding: 12px;
+/* Table Header */
+.results-table thead {
+    background: #1A2B48; /* Dark Blue */
+    color: #FFD700; /* Gold */
     font-size: 18px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-bottom: 3px solid #A0653C;
 }
 
-/* Hover effect for sorting */
-.results-table thead th:hover {
-    background: #A0653C;
-    transition: 0.3s;
+/* Table Headers */
+.results-table th {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #FFD700;
+    white-space: nowrap; /* Prevents wrapping */
 }
 
-/* Table rows */
-.results-table tbody tr {
-    border-bottom: 1px solid #ddd;
-    transition: background 0.3s ease-in-out;
+/* Table Data */
+.results-table td {
+    padding: 12px;
+    text-align: left;
+    white-space: normal;
 }
 
-/* Alternate row coloring */
-.results-table tbody tr:nth-child(odd) {
-    background: #F5E6D3; /* Slightly different shade */
+/* Alternating Row Colors */
+.results-table tbody tr:nth-child(even) {
+    background: #FAF3E0;
 }
 
-/* Hover effect */
+/* Row Hover Effect */
 .results-table tbody tr:hover {
-    background: #EAD7C3;
+    background: #E6CCAE;
 }
 
-/* Link styling */
-.results-table tbody tr td a {
-    color: #B22222; /* Deep red */
+/* Clickable Links */
+.results-table td a {
+    color: #1A2B48;
     font-weight: bold;
     text-decoration: none;
-    transition: all 0.3s ease-in-out;
 }
 
-/* Hover effect on links */
-.results-table tbody tr td a:hover {
-    color: #D17D35; /* Saffron orange */
-    text-decoration: underline;
+.results-table td a:hover {
+    color: blue;
+}
+
+/* Error Section */
+.error-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Retry Button */
+.retry-button {
+    padding: 12px 20px;
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: var(--soft-shadow);
+}
+
+.retry-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
 }

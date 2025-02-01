@@ -1,53 +1,146 @@
-/**
- * Controller module for handling API calls between React frontend and Flask backend.
- * Ensures input validation, API communication, and redirection for search results.
- */
+// src/controller.ts
+import Fuse from 'fuse.js';
 
-import { Question, SearchResponse, UpdateResponse } from "./types";
+// Load environment variables (Ensure dotenv is set up in your project)
+const MICROSOFT_TRANSLATOR_KEY = import.meta.env.VITE_MICROSOFT_AZURE_KEY;
+const MICROSOFT_TRANSLATOR_REGION = import.meta.env.VITE_MICROSOFT_TRANSLATOR_REGION || "centralindia";
+const MICROSOFT_TRANSLATOR_ENDPOINT = "https://api.cognitive.microsofttranslator.com";
+const SEARCH_THRESHOLD = 0.24;
 
 /**
- * Processes the search input by validating it and calling the Flask API.
- * - Calls Flask API for transliteration and search processing.
- * - Redirects to the results page after receiving a valid response.
- * 
- * @param query - The search text input by the user.
+ * isHindiText:
+ * Detects if the query is already in Hindi (Devanagari script).
+ * If text contains characters in the Unicode range \u0900-\u097F, it is considered Hindi.
  */
-export const processSearch = async (query: string) => {
-    try {
-        if (!query.trim()) throw new Error("Query cannot be empty");
-        
-        // Call Flask API to process the search query
-        const response = await fetch(`http://localhost:5000/search?query=${encodeURIComponent(query)}`);
-        if (!response.ok) throw new Error("Failed to process search");
-        
-        const results = await response.json();
-        
-        // Redirect to results page with the search query (React will fetch results on this page)
-        window.location.href = `/results?search=${encodeURIComponent(query)}`;
-    } catch (error) {
-        console.error("Search processing failed:", error);
-    }
+export const isHindiText = (query: string): boolean => {
+  const hindiRegex = /[\u0900-\u097F]/;
+  return hindiRegex.test(query);
 };
 
 /**
- * Fetches search results from the backend.
- * - This function is called by the Results Page (`Results.tsx`) after redirection.
- * - It sends a request to Flask and retrieves a list of matching questions.
- * 
- * @param query - The search text (expected to be already transliterated in Hindi).
- * @returns List of matching questions from the backend.
+ * transcribeQuery:
+ * Calls Microsoft's Transliteration API to convert English words into Hindi script.
+ * Only runs if the input is NOT already in Hindi.
  */
-export const fetchResults = async (query: string) => {
+export const transcribeQuery = async (query: string): Promise<string> => {
+  if (isHindiText(query)) return query; // Skip API call if already Hindi
+
+  //DEBUG: console.log("Transcribing query:", query);
+
+  try {
+    const response = await fetch(`${MICROSOFT_TRANSLATOR_ENDPOINT}/transliterate?api-version=3.0&language=hi&fromScript=latn&toScript=deva`, {
+      method: "POST",
+      headers: {
+        "Ocp-Apim-Subscription-Key": MICROSOFT_TRANSLATOR_KEY,
+        "Ocp-Apim-Subscription-Region": MICROSOFT_TRANSLATOR_REGION,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([{ "Text": query }]),
+    });
+
+    const data = await response.json();
+    return data[0]?.text || query; // Return transliterated text or fallback
+  } catch (error) {
+    console.error("Error in transliteration:", error);
+    return query;
+  }
+};
+
+/**
+ * translateToHindi:
+ * Calls Microsoft's Translation API to convert an English query into Hindi.
+ * Only runs if the input is NOT already in Hindi.
+ */
+export const translateToHindi = async (query: string): Promise<string> => {
+  if (isHindiText(query)) return query; // Skip API call if already Hindi
+
+  // DEBUG: console.log("Translating query to Hindi:", query);
+
+  try {
+    const response = await fetch(`${MICROSOFT_TRANSLATOR_ENDPOINT}/translate?api-version=3.0&to=hi`, {
+      method: "POST",
+      headers: {
+        "Ocp-Apim-Subscription-Key": MICROSOFT_TRANSLATOR_KEY,
+        "Ocp-Apim-Subscription-Region": MICROSOFT_TRANSLATOR_REGION,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([{ "Text": query }]),
+    });
+
+    const data = await response.json();
+    return data[0]?.translations[0]?.text || query; // Return translated text or fallback
+  } catch (error) {
+    console.error("Error in translation:", error);
+    return query;
+  }
+};
+
+/**
+ * generateSearchVariants:
+ * Given the original query string, generates an array of search variations:
+ *   - Original query (English or Hindi)
+ *   - Transliterated version (English words in Hindi script)
+ *   - Translated version (Fully translated Hindi sentence)
+ * Avoids unnecessary API calls if the query is already in Hindi.
+ */
+export const generateSearchVariants = async (query: string): Promise<string[]> => {
+    //DEBUG: console.log("🔍 Called generateSearchVariants() for query:", query);
+    const englishQuery = query;
+  const transcribedQuery = await transcribeQuery(query);
+  const translatedQuery = await translateToHindi(query);
+  // DEBUG: console.log("Search Variants:", [englishQuery, transcribedQuery, translatedQuery]);
+  return Array.from(new Set([englishQuery, transcribedQuery, translatedQuery])); // Remove duplicates
+};
+
+/**
+ * searchQuestions:
+ * Searches the minimal question list (from '/all_qs.json') using Fuse.js.
+ */
+export const searchQuestions = async (query: string): Promise<number[]> => {
+    //DEBUG: console.log("🔍 Called searchQuestions() for query:", query);
+    if (!query.trim()) return [];
+
+  const variants = await generateSearchVariants(query);
+  const qsResponse = await fetch("/all_qs.json");
+  const allQuestions: { id: number; question: string }[] = await qsResponse.json();
+
+  const fuseOptions = {
+    keys: ['question'],
+    threshold: SEARCH_THRESHOLD,
+  };
+
+  const matchingIds = new Set<number>();
+  variants.forEach((variant) => {
+    const fuse = new Fuse(allQuestions, fuseOptions);
+    const fuseResults = fuse.search(variant);
+    fuseResults.forEach(result => matchingIds.add(result.item.id));
+  });
+
+  return Array.from(matchingIds);
+};
+
+/**
+ * handleSearch:
+ * Uses searchQuestions to retrieve matching question IDs, then fetches
+ * the full results from '/all.json' and filters by those IDs.
+ */
+export const handleSearch = async (query: string): Promise<{ id: number, question: string, video_url: string, video_date: string, video_index: number }[]> => {
+  const matchingIds = await searchQuestions(query);
+  const fullResponse = await fetch("/all.json");
+  const fullResults = await fullResponse.json();
+  return fullResults.filter((item: { id: number; }) => matchingIds.includes(item.id));
+};
+
+/**
+ * fetchResults:
+ * Wraps handleSearch to ensure compatibility with Results.tsx.
+ */
+export const fetchResults = async (query: string): Promise<{ id: number, question: string, video_url: string, video_date: string, video_index: number }[]> => {
+    //DEBUG: console.log("🔍 Called fetchResults() for query:", query);
     try {
-        console.log(`Fetching results for: ${query}`);
-        
-        // Call Flask API to retrieve search results
-        const response = await fetch(`http://localhost:5000/search?query=${encodeURIComponent(query)}`);
-        if (!response.ok) throw new Error("Failed to fetch results");
-        
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching results:", error);
-        return [];
-    }
+    return await handleSearch(query);
+  } catch (error) {
+    console.error("Error fetching results:", error);
+    throw error;
+  }
 };

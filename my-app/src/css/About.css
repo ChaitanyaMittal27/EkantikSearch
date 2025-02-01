@@ -1,19 +1,36 @@
-/* Background with Marble-Like Soft White */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap');
+
+/* Page Container (Matches Search & Results) */
 .about-container {
-    background: linear-gradient(to bottom, #FAF3E0, #F5E6D3);
+    padding: 40px;
+    padding-top: 100px;
+    background: #ffffff !important; /* Lightened container */
+    color: var(--primary-color);
+    max-width: 900px;
+    margin: auto;
     text-align: center;
-    padding: 50px;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 16px;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+    border: 2px solid #d4b27c; /* Soft Gold Border */
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* About Description */
+/* Title */
+.about-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #B8860B; /* Gold */
+    font-family: 'Cormorant Garamond', serif;
+    margin-bottom: 10px;
+}
+
+/* Description */
 .about-description {
-    font-size: 22px;
-    color: #5A3E1B; /* Warm Earthy Brown */
-    max-width: 600px;
-    margin: auto;
+    font-size: 18px;
+    color: #2a2a2a;
     line-height: 1.6;
+    max-width: 700px;
+    margin: auto;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }

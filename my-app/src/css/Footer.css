@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap');
 
-/* Footer - Initially Hidden */
+/* Footer - Always Visible */
 .footer {
-    background: #121C2B; /* Dark navy to match header */
+    background: #121C2B; /* Dark navy */
     text-align: center;
-    padding: 10px;
+    padding: 0px;
     color: #FFD700; /* Gold */
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     position: fixed;
     bottom: 0;
@@ -14,25 +14,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
+    margin: 0;
 }
 
-/* Hidden Footer */
-.footer.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
-/* Visible Footer */
-.footer.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* "Radhe Radhe" Text */
+/* "राधे राधे" Text */
 .radhe-text {
     font-family: 'Tangerine', cursive;
-    font-size: 28px;
+    font-size: 30px;
     color: #E63946; /* Deep Red */
     text-shadow: 1px 1px 6px rgba(255, 0, 0, 0.3);
     margin: 0;
@@ -40,29 +29,7 @@
 
 /* Footer Text */
 .footer-text {
-    font-size: 12px;
-    color: #B0C4DE; /* Light Steel Blue */
-    margin-top: 5px;
-}
-
-/* "Go to Top" Button */
-.go-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #FFD700; /* Gold */
-    color: #121C2B; /* Dark navy */
     font-size: 14px;
-    font-weight: bold;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-    box-shadow: 0px 4px 10px rgba(255, 215, 0, 0.2);
-}
-
-/* Hover Effect */
-.go-to-top:hover {
-    background: #B8860B; /* Darker Gold */
+    color: #B0C4DE; /* Light Steel Blue */
+    margin: 5px;
 }

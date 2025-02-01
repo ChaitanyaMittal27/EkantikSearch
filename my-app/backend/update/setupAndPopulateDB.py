@@ -41,12 +41,24 @@ def parse_questions(description):
     # Store extracted questions
     return [{"timestamp": ts, "question": q.strip()} for ts, q in matches]
 
+# extracting the video index from the video title
+def extract_video_index(line: str):
+    """
+    Extracts the video index from a string like:
+    "#806 Ekantik Vartalaap & Darshan/ 31-01-2025/"
+    Returns the number as an integer.
+    """
+    match = re.match(r"#(\d+)", line)
+    if match:
+        return int(match.group(1))
+    else:
+        return None
+
 # 🔹 Main function to process filtered videos and store data in the database
 def main():
     """Reads filtered videos, fetches descriptions, extracts questions, and inserts into the database."""
     setup_database()  # Ensure database is set up before inserting data
 
-    video_index = 0  # Unique video index counter
     failed_videos = []  # List to store failed videos
 
     with open(FILTERED_VIDEOS_FILE, "r", encoding="utf-8") as infile:
@@ -75,6 +87,7 @@ def main():
                 failed_videos.append(f"{video_id} | {video_title} | No Questions Found")
                 continue
 
+
             # Convert extracted data into TableEntry objects and insert into DB
             for i, q in enumerate(questions):
                 entry = TableEntry(
@@ -82,13 +95,10 @@ def main():
                     video_url=video_url,
                     timestamp=q["timestamp"],
                     video_date=video_date,
-                    video_index=video_index,
+                    video_index=extract_video_index(video_title),
                     video_question_index=i
                 )
                 insert_into_db(entry)  # Insert each entry immediately
-
-            # Move to next video
-            video_index += 1
 
     # Save failed videos log
     with open(FAILED_DETAILS_FILE, "w", encoding="utf-8") as outfile:
