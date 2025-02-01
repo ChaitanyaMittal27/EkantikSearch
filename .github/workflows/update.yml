@@ -18,9 +18,10 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install Required Python Modules
+      - name: Install Required Python Modules and Verify
         run: |
-          pip install requests python-dotenv  # Install all missing dependencies
+          pip install requests python-dotenv
+          python -c "import requests; import dotenv; print('✅ Dependencies installed successfully.')"
 
       - name: Run Database Update Script
         id: update_db
