@@ -1,7 +1,7 @@
 // Search Page - Handles User Input, Suggestions & Redirects to Results
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../src/CSS/Search.css";
+import "../css/Search.css";
 
 const customSuggestions: string[] = [
     "धर्म", "कर्म", "गुरु", "भक्ति", "अहंकार",
