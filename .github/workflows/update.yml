@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Debug: List Files Before Running
+      - name: Debug List Files Before Running
         run: |
           echo "📂 Current Directory: $(pwd)"
           ls -la my-app/backend/update/
