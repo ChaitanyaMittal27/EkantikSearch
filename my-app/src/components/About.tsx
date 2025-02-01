@@ -11,6 +11,9 @@ const About: React.FC = () => {
                 This tool allows users to search through past Q&A discussions, ensuring valuable wisdom is never lost.  
                 Our goal is to make spiritual knowledge more accessible and organized for everyone.
             </p>
+            <p className="about-github">
+                View the project on <a href="https://github.com/ChaitanyaMittal27/Ekankik_QS" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </p>
         </div>
     );
 };
