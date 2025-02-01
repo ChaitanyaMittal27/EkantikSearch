@@ -15,13 +15,17 @@ class TableEntry:
         self.video_index = video_index  # Unique index of the video
         self.video_question_index = video_question_index  # Index of the question in the video
 
-# 🔹 Function to create the SQLite database and questions table
 def setup_database():
-    """Creates the SQLite database and the 'questions' table if it does not exist."""
+    """Drops and recreates the questions table to ensure no duplicate data."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
+    
+    # ⚠️ Drop the existing table (reset the database)
+    cursor.execute("DROP TABLE IF EXISTS questions")
+    
+    # Recreate the table
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS questions (
+        CREATE TABLE questions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             question_text TEXT,
             video_url TEXT,
@@ -30,9 +34,10 @@ def setup_database():
             video_index INTEGER,
             video_question_index INTEGER
         )
-    ''')
+    ''')    
     conn.commit()
     conn.close()
+
 
 # 🔹 Function to insert a single entry into the database
 def insert_into_db(entry):
