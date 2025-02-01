@@ -47,24 +47,27 @@ jobs:
       
       - name: Commit and Push Changes
         if: env.update_status == 'success'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub's built-in token
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # Check for changes before committing
+          # Check if there are any changes before committing
           if git diff --quiet && git diff --staged --quiet; then
             echo "⚠️ No changes to commit"
             exit 0
           fi
           
-          git add -A
+          git add -A  # Stage all changes
           
           DATE=$(date +'%Y-%m-%d %H:%M:%S UTC')
           git commit -m "Auto-update: Database and JSON files on $DATE"
-
-          # Push using GitHub Actions Secret Token
-          git push https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/ChaitanyaMittal27/Ekankik_QS.git main
+      
+          # Push using GitHub’s built-in authentication token
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ChaitanyaMittal27/Ekankik_QS.git main
         continue-on-error: true
+
 
 
       - name: Report Failure
