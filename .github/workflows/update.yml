@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Debug: Print Working Directory & List Files
+      - name: Debug Print Working Directory & List Files
         run: |
           echo "📂 Current Directory: $(pwd)"
           echo "📝 Listing Root Files..."
