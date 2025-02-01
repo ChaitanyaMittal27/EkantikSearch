@@ -20,7 +20,7 @@ jobs:
 
       - name: Install Required Python Modules
         run: |
-          pip install requests  # Install missing dependencies
+          pip install requests python-dotenv  # Install all missing dependencies
 
       - name: Run Database Update Script
         id: update_db
