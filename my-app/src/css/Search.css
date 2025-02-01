@@ -41,7 +41,8 @@
   .search-instructions {
     font-size: 18px;
     color: #555;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    margin-top: 0px;
   }
   
   /* Search Bar */
@@ -124,4 +125,27 @@
     color: white;
     transform: scale(1.1);
   }
+
+  .transcription-info {
+    font-size: 18px; /* Increased size */
+    background: rgba(255, 215, 0, 0.3); /* Light gold background */
+    padding: 10px;
+    padding-top: 0px;
+    margin-top: 0px;
+    /* font-weight: bold; */
+    border-radius: 8px;
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+
+/* Highlight transliteration part */
+.transcription-info b {
+    /* color: #B8860B; /* Gold color to match the theme */
+    font-weight: bolder;
+    font-size: 1.2rem; /* Larger size */
+}
+
+
   
