@@ -1,3 +1,4 @@
+// Main Application - Routes & Layout Wrapper for Pages
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Search from "./components/Search";
@@ -19,7 +20,7 @@ const App: React.FC = () => {
                     <Route path="/all" element={<AllQuestions />} />
                 </Routes>
             </div>
-            <Footer lastUpdated="Video 8000 on 2025-01-25" onUpdate={() => alert("Updating database...")} />
+            <Footer/>
         </Router>
     );
 };

@@ -1,4 +1,4 @@
-// src/components/Footer.tsx
+// Footer Component - Displays Branding & Fixed Copyright Info
 import React from "react";
 import "../css/Footer.css";
 

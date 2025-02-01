@@ -1,3 +1,4 @@
+// All Questions Page - Displays Archived Questions with Clickable Video Links
 import React, { useEffect, useState } from "react";
 import "../css/AllQuestions.css";
 

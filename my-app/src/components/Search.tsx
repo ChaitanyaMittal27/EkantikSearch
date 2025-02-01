@@ -1,4 +1,4 @@
-// src/components/Search.tsx
+// Search Page - Handles User Input, Suggestions & Redirects to Results
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../src/CSS/Search.css";

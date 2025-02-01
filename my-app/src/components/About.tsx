@@ -1,4 +1,4 @@
-// src/components/About.tsx
+// About Page - Displays Project Description & GitHub Link
 import React from "react";
 import "../css/About.css";
 

@@ -1,4 +1,4 @@
-// src/components/Results.tsx
+// Search Results Page - Fetches & Displays Search Results in Table Format
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import "../../src/CSS/Results.css";
