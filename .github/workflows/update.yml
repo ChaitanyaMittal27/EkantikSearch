@@ -18,8 +18,8 @@ jobs:
           echo "📂 Current Directory: $(pwd)"
           echo "📝 Listing Root Files..."
           ls -la
-          echo "📂 Checking Ekankik_QS/my-app..."
-          ls -la Ekankik_QS/my-app || echo "❌ Directory missing!"
+          echo "📂 Checking my-app/backend..."
+          ls -la my-app/backend || echo "❌ Directory missing!"
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -29,7 +29,7 @@ jobs:
       - name: Run Database Update Script
         id: update_db
         run: |
-          if python Ekankik_QS/my-app/backend/update/populateDB.py; then
+          if python my-app/backend/update/populateDB.py; then
             echo "✅ Database update successful" 
             echo "update_status=success" >> $GITHUB_ENV
           else
