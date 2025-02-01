@@ -13,23 +13,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Debug Print Working Directory & List Files
-        run: |
-          echo "📂 Current Directory: $(pwd)"
-          echo "📝 Listing Root Files..."
-          ls -la
-          echo "📂 Checking my-app/backend..."
-          ls -la my-app/backend || echo "❌ Directory missing!"
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
+      - name: Debug: List Files Before Running
+        run: |
+          echo "📂 Current Directory: $(pwd)"
+          ls -la my-app/backend/update/
+
       - name: Run Database Update Script
         id: update_db
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}  # Use GitHub Secret
         run: |
-          if python my-app/backend/update/populateDB.py; then
+          if python3 my-app/backend/update/populateDB.py; then
             echo "✅ Database update successful" 
             echo "update_status=success" >> $GITHUB_ENV
           else
@@ -45,10 +44,12 @@ jobs:
           git config --global user.email "actions@github.com"
           
           # Check for changes before committing
-          if git diff --staged --quiet; then
+          if git diff --quiet && git diff --staged --quiet; then
             echo "⚠️ No changes to commit"
             exit 0
           fi
+          
+          git add -A  # Ensures all changes are staged
           
           DATE=$(date +'%Y-%m-%d %H:%M:%S UTC')
           git commit -m "Auto-update: Database and JSON files on $DATE"
