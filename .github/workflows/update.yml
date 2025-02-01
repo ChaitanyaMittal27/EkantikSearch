@@ -13,17 +13,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Debug Print Working Directory & List Files
-        run: |
-          echo "📂 Current Directory: $(pwd)"
-          ls -la
-          echo "📂 Checking my-app/backend/update/"
-          ls -la my-app/backend/update/
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
+
+      - name: Install Required Python Modules
+        run: |
+          pip install requests  # Install missing dependencies
 
       - name: Run Database Update Script
         id: update_db
@@ -39,6 +36,13 @@ jobs:
             echo "update_status=failure" >> $GITHUB_ENV
             exit 1
           fi
+
+      - name: Run Export Scripts with Arguments
+        if: env.update_status == 'success'
+        working-directory: my-app/backend
+        run: |
+          python db/export_to_json.py public/all.json
+          python db/export_qs_to_json.py public/all_qs.json
 
       - name: Commit and Push Changes
         if: env.update_status == 'success'
