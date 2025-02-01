@@ -13,26 +13,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Debug: Print Working Directory & List Files
+        run: |
+          echo "📂 Current Directory: $(pwd)"
+          echo "📝 Listing Root Files..."
+          ls -la
+          echo "📂 Checking Ekankik_QS/my-app..."
+          ls -la Ekankik_QS/my-app || echo "❌ Directory missing!"
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: Install Dependencies
-        working-directory: Ekankik_QS/my-app/backend
-        run: |
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt || echo "⚠️ Failed to install dependencies"
-          else
-            echo "❌ requirements.txt not found!"
-            exit 1
-          fi
-
       - name: Run Database Update Script
-        working-directory: Ekankik_QS/my-app/backend
         id: update_db
         run: |
-          if python update/populateDB.py; then
+          if python Ekankik_QS/my-app/backend/update/populateDB.py; then
             echo "✅ Database update successful" 
             echo "update_status=success" >> $GITHUB_ENV
           else
@@ -43,7 +40,6 @@ jobs:
 
       - name: Commit and Push Changes
         if: env.update_status == 'success'
-        working-directory: Ekankik_QS/my-app/backend
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
