@@ -88,7 +88,7 @@ export const generateSearchVariants = async (query: string): Promise<string[]> =
     const englishQuery = query;
   const transcribedQuery = await transcribeQuery(query);
   const translatedQuery = await translateToHindi(query);
-  console.log("Search Variants:", [englishQuery, transcribedQuery, translatedQuery]);
+  // DEBUG: console.log("Search Variants:", [englishQuery, transcribedQuery, translatedQuery]);
   return Array.from(new Set([englishQuery, transcribedQuery, translatedQuery])); // Remove duplicates
 };
 

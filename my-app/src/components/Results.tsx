@@ -67,40 +67,55 @@ const Results: React.FC = () => {
   
   return (
     <div className="results-container">
-      <h2 className="all-questions-title">Search Results</h2>
-      <p className="instructions">Click on a question to jump to that part of the video.</p>
+      <h2 className="all-questions-title">Search Results for: "{searchQuery}"</h2>
+      <p className="instructions">Click on <strong>Watch</strong> to jump to that part of the video.</p>
 
-      <div className="table-container">
-        <table className="results-table">
-          <thead>
-            <tr>
-              <th>Question</th>
-              <th>Ekantik #</th>
-              <th>Timestamp</th>
-              <th>Date</th>
-              <th>Video</th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.slice(0, 30).map((r) => {
-              const finalVideoURL = constructJumpURL(r.video_url, r.timestamp);
-              return (
-                <tr key={r.id}>
-                  <td>{r.question}</td>
-                  <td>{r.video_index}</td>
-                  <td>{r.timestamp || "N/A"}</td>
-                  <td>{r.video_date}</td>
-                  <td>
-                    <a href={finalVideoURL} target="_blank" rel="noopener noreferrer">
-                      Watch
-                    </a>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      {loading && <p>Loading...</p>}
+
+      {!loading && (error || results.length === 0) && (
+        <div className="error-section">
+          <p className="error-message">
+            {error ? `Error: ${error}` : "No results found for this search."}
+          </p>
+          <button className="retry-button" onClick={() => navigate("/")}>
+            🔄 Search Again
+          </button>
+        </div>
+      )}
+
+      {!loading && results.length > 0 && (
+        <div className="table-container">
+          <table className="results-table">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Ekantik #</th>
+                <th>Timestamp</th>
+                <th>Date</th>
+                <th>Video</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.slice(0, 30).map((r) => {
+                const finalVideoURL = constructJumpURL(r.video_url, r.timestamp);
+                return (
+                  <tr key={r.id}>
+                    <td>{r.question}</td>
+                    <td>{r.video_index}</td>
+                    <td>{r.timestamp || "N/A"}</td>
+                    <td>{r.video_date}</td>
+                    <td>
+                      <a href={finalVideoURL} target="_blank" rel="noopener noreferrer">
+                        Watch
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

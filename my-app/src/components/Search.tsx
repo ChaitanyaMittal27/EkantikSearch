@@ -39,7 +39,7 @@ const Search: React.FC = () => {
 
   return (
     <div className="search-container">
-        <h1 className="search-title">🔍 Ekantik Question Search</h1>
+        <h1 className="search-title">Ekantik Question Search 🔍</h1>
         <p className="search-instructions">Enter a query and press <b>Enter</b> or click the search icon.</p>
 
         <div className="search-wrapper">
