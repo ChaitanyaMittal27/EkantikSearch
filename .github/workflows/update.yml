@@ -44,7 +44,7 @@ jobs:
         run: |
           python db/export_to_json.py public/all.json
           python db/export_qs_to_json.py public/all_qs.json
-
+      
       - name: Commit and Push Changes
         if: env.update_status == 'success'
         run: |
@@ -57,12 +57,15 @@ jobs:
             exit 0
           fi
           
-          git add -A  # Ensures all changes are staged
+          git add -A
           
           DATE=$(date +'%Y-%m-%d %H:%M:%S UTC')
           git commit -m "Auto-update: Database and JSON files on $DATE"
-          git push
+
+          # Push using GitHub Actions Secret Token
+          git push https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/ChaitanyaMittal27/Ekankik_QS.git main
         continue-on-error: true
+
 
       - name: Report Failure
         if: failure()
