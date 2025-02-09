@@ -30,7 +30,12 @@
     .results-table, .questions-table {
         display: block;
         overflow-x: auto;
-        white-space: nowrap;
+        min-width: 600px; /* Ensures tables don’t shrink too much */
+        max-width: 100%;
+    }
+
+    .results-container, .all-questions-container {
+        overflow-x: auto;
     }
 
     .results-table th, .questions-table th,
