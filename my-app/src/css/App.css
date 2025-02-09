@@ -1,5 +1,6 @@
 /* Global Styles & Page Layout (Applies to About, Search, and Results) */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap');
+@import url('./responsive.css');
 
 /* Background with Soft Spiritual Gradient */
 .about-container {

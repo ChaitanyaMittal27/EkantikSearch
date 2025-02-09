@@ -1,0 +1,66 @@
+/* Responsive Styles for Mobile Devices */
+
+@media (max-width: 768px) {
+    /* General Styles */
+    body {
+        font-size: 14px;
+    }
+
+    /* Header Adjustments */
+    .header {
+        padding: 10px;
+    }
+    
+    .title {
+        font-size: 24px;
+    }
+    
+    .nav-tabs ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Container Adjustments */
+    .results-container, .all-questions-container, .about-container, .search-container {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    /* Table Adjustments */
+    .results-table, .questions-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .results-table th, .questions-table th,
+    .results-table td, .questions-table td {
+        padding: 8px;
+    }
+
+    /* Footer Adjustments */
+    .footer {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .radhe-text {
+        font-size: 20px;
+    }
+    
+    .footer-text {
+        font-size: 12px;
+    }
+
+    /* Buttons */
+    .retry-button, .search-button {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /* Search Input */
+    .search-wrapper {
+        padding: 10px;
+        flex-direction: column; /* Stacks input and button */
+    }
+}

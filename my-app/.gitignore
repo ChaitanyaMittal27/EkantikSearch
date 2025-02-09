@@ -26,4 +26,4 @@ dist-ssr
 # api keys
 .env
 
-/backend/venv
+.github\workflows\update.yml

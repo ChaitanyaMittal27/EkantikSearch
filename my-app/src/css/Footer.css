@@ -1,5 +1,6 @@
 /* Styles for Footer - Fixed Position, Branding & "Radhe Radhe" Text */
 @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap');
+@import url('./responsive.css');
 
 /* Footer - Always Visible */
 .footer {
