@@ -87,6 +87,7 @@ This project is **fully automated** with:
 - **Maintainer**: [Chaitanya Mittal](https://github.com/ChaitanyaMittal27)
 - **GitHub Repo**: [Ekantik Search](https://github.com/ChaitanyaMittal27/EkantikSearch)
 - **Issues?** Open a [GitHub Issue](https://github.com/ChaitanyaMittal27/EkantikSearch/issues)
+- For **suggestions**, **improvements**, and **new feature ideas**, check out [SUGGESTIONS.md](SUGGESTIONS.md) and contribute your thoughts!
 
 ---
 
