@@ -1,47 +1,24 @@
-/* Styles for Header Navigation Bar - Shrink Effect & Menu Links */
+/* Header.css - Styles for Header Navigation Bar */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap');
-@import url('./responsive.css');
-
-/* Header Styling */
-.header {
-    background: #121C2B; /* Dark navy */
-    padding: 0;
-    text-align: center;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    margin-top: 0px;
-}
-
-
-.header.shrink {
-    padding: 0;
-    height: 50px; /* Ensures it doesn't take unnecessary space */
-    overflow: hidden;
-}
-
-
-.header.shrink .title {
-    opacity: 0;
-    visibility: hidden;
-    height: 0;
-}
+@import url('./layout.css');
 
 
 /* Title Styling */
+/* Improve Left-Side Branding Text */
 .title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 38px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: #FFD700; /* Gold */
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 5px;
-    transition: opacity 0.3s ease-in-out;
+    font-size: var(--header-title-size); 
+    font-weight: bold;
+    color: #FFD700; /* Keep gold */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3); /* Add subtle shadow */
+    letter-spacing: 1.5px;
+    white-space: nowrap; /* Prevents text from breaking into two lines */
+    margin-left: 20px; /* Adjust spacing from the left */
+    line-height: 80px; /* Matches header height for better vertical alignment */
+    display: inline-block;
+    vertical-align: middle;
 }
+
 
 /* Hide title when scrolling */
 .header.shrink .title {
@@ -58,14 +35,7 @@
     transition: all 0.3s ease-in-out;
     padding: 5px;
     margin-bottom: 0;
-}
-
-/* Fixed Navigation Bar when scrolled */
-.header.shrink .nav-tabs {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+    margin-left: 50px;
 }
 
 /* Navigation Items */
@@ -81,7 +51,7 @@
 /* Navigation Links */
 .nav-tabs ul li a {
     text-decoration: none;
-    font-size: 18px;
+    font-size: var(--nav-text-size);
     font-weight: bold;
     color: #B0C4DE; /* Light Steel Blue */
     padding: 10px 15px;

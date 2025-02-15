@@ -1,4 +1,6 @@
-/* Global Layout Rules - Fullscreen Setup & Background */
+/* Global Layout Rules - Fullscreen Setup */
+@import url('css/layout.css');
+
 /* Ensures full-screen layout */
 html, body {
   margin: 0;
@@ -6,7 +8,6 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow-x: hidden; /* Prevents horizontal scroll */
-  background: linear-gradient(to bottom, #FAF3E0, #F5E6D3); /* Soft background */
 }
 
 /* Ensures #root takes full viewport */

@@ -1,33 +1,35 @@
-/* Styles for All Questions Page - Table, Layout & Scrollability */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap');
-@import url('./responsive.css');
+/* AllQuestions.css - Styles for All Questions Page */
+@import url('./layout.css');
 
 /* Page Container */
 .all-questions-container {
     padding: 40px;
-    margin-top: 110px;
+    background: var(--container-bg);
+    color: var(--primary-color);
+    max-width: var(--content-max-width);
+    margin: auto;
     text-align: center;
-    max-width: 900px;
-    background: #fffdf5; /* Lightened container */
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
-    border: 2px solid #d4b27c; /* Soft Gold Border */
-    margin-left: auto;
-    margin-right: auto;
+    border: 2px solid var(--gold-color);
+    max-height: calc(100vh - var(--header-height) - var(--footer-height) - 14rem); /* Prevents body overflow */
+    overflow: hidden; /* Ensures only the table scrolls */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Page Title */
 .all-questions-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
+    font-size: var(--questions-title-size);
     font-weight: bold;
-    color: #B8860B; /* Muted Gold */
+    color: var(--gold-color);
     margin-bottom: 10px;
+    font-family: 'Cormorant Garamond', serif;
 }
 
 /* Instructions */
 .instructions {
-    font-size: 18px;
+    font-size: var(--questions-text-size);
     color: #555;
     margin-bottom: 20px;
 }
@@ -36,7 +38,7 @@
 .table-container {
     max-width: 95%;
     margin: auto;
-    overflow-y: auto;
+    overflow-y: auto; /* Ensures only the table is scrollable */
     max-height: 70vh; /* Prevents full-page overflow */
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -54,7 +56,7 @@
 .questions-table thead {
     background: #1A2B48; /* Dark Blue */
     color: #FFD700; /* Gold */
-    font-size: 18px;
+    font-size: var(--questions-table-header-size);
 }
 
 /* Table Headers */
@@ -85,6 +87,7 @@
 .questions-table td {
     padding: 12px;
     text-align: left;
+    font-size: var(--questions-table-text-size);
     white-space: normal; /* Allow multi-line text */
 }
 
