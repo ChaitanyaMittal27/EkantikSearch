@@ -1,50 +1,40 @@
-/* Styles for Results Page - Table Formatting & Error Handling */
-@import url('./responsive.css');
+/* Results.css - Styles for Results Page */
+@import url('./layout.css');
 
-:root {
-    --primary-bg: #f7ebd6; /* Soft Beige Background */
-    --container-bg: #fffdf5; /* Slightly lighter container */
-    --primary-color: #2a2a2a;
-    --accent-color: #007bff;
-    --border-color: #dddddd;
-    --gold-color: #b8860b;
-    --light-gold: #e6ccae;
-    --soft-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Background */
-body {
-    background: linear-gradient(to bottom, var(--primary-bg), #f3dfc1);
-}
-
-/* Main Container */
 .results-container {
     padding: 40px;
-    padding-top: 150px;
     background: var(--container-bg);
     color: var(--primary-color);
-    max-width: 900px;
+    max-width: var(--content-max-width);
     margin: auto;
     text-align: center;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
-    border: 2px solid #d4b27c;
+    border: 2px solid var(--gold-color);
+    max-height: calc(100vh - var(--header-height) - var(--footer-height) - 14rem); /* Prevents body overflow */
+    overflow: hidden; /* Ensures only table scrolls */
+    display: flex;
+    flex-direction: column;
 }
+
 
 /* Title */
 .all-questions-title {
-    font-size: 32px;
+    font-size: var(--results-title-size);
     font-weight: bold;
     color: var(--gold-color);
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     font-family: 'Cormorant Garamond', serif;
+    padding-bottom: 0px;
 }
 
 /* Instructions */
 .instructions {
-    font-size: 18px;
+    font-size: var(--results-text-size);
     color: #555;
     margin-bottom: 20px;
+    margin-top: 0px;
+    padding-top: 0px;
 }
 
 /* Table - Full Width */
@@ -53,13 +43,14 @@ body {
     border-collapse: collapse;
     background: white;
     table-layout: auto;
+    overflow-y: auto; /* Makes only the table scrollable */
 }
 
 /* Table Header */
 .results-table thead {
     background: #1A2B48; /* Dark Blue */
     color: #FFD700; /* Gold */
-    font-size: 18px;
+    font-size: var(--results-table-header-size);
 }
 
 /* Table Headers */
@@ -74,6 +65,7 @@ body {
 .results-table td {
     padding: 12px;
     text-align: left;
+    font-size: var(--results-table-text-size);
     white-space: normal;
 }
 
@@ -107,24 +99,26 @@ body {
 /* Error Message */
 .error-message {
     color: red;
-    font-size: 16px;
+    font-size: var(--results-error-size);
     font-weight: bold;
 }
 
 /* Retry Button */
 .retry-button {
     padding: 12px 20px;
-    background-color: var(--accent-color);
-    color: #fff;
+    background-color: #006eb3;
+    color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: var(--results-button-size);
     transition: all 0.2s ease;
     box-shadow: var(--soft-shadow);
 }
 
 .retry-button:hover {
-    background-color: #0056b3;
+    background-color: #002ab3ea;
     transform: scale(1.05);
+
 }
+

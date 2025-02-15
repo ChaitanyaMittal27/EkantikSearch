@@ -1,20 +1,10 @@
-/* Global Styles & Page Layout (Applies to About, Search, and Results) */
+/* App.css - Page-Level Styling */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap');
-@import url('./responsive.css');
+@import url('./layout.css');
 
-/* Background with Soft Spiritual Gradient */
-.about-container {
-    background: linear-gradient(to bottom, #F5E6D3, #E6CCAE); /* Warm beige tones */
-    text-align: center;
-    height: 100vh; /* Full screen height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Centered Content Box */
-.about-content {
-    max-width: 700px;
+/* Content Box Styling */
+.content-box {
+    max-width: 900px;
     background: rgba(255, 255, 255, 0.3); /* Light translucent white */
     padding: 30px;
     border-radius: 10px;
@@ -22,7 +12,7 @@
 }
 
 /* Elegant Golden Title */
-.about-title {
+.page-title {
     font-size: 32px;
     font-weight: bold;
     color: #B8860B; /* Muted Gold */
@@ -30,8 +20,8 @@
     margin-bottom: 20px;
 }
 
-/* Polite Description */
-.about-description {
+/* Page Description */
+.page-description {
     font-size: 20px;
     color: #5A3E1B; /* Warm Earthy Brown */
     line-height: 1.6;

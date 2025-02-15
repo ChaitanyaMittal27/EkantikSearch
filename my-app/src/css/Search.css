@@ -1,55 +1,38 @@
-/* Styles for Search Page - Input Field, Suggestions & UI */
-@import url('./responsive.css');
+/* Search.css - Styles for Search Page */
+@import url('./layout.css');
 
-:root {
-    --primary-bg: #ffffff;
-    --primary-color: #2a2a2a;
-    --accent-color: #007bff;
-    --border-color: #dddddd;
-    --gold-color: #b8860b;
-    --light-gold: #e6ccae;
-    --soft-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  
-  .search-container {
+/* Search Page Container */
+.search-container {
     padding: 40px;
-    padding-top: 150px;
-    background: #fffdf5; /* Light Creamy White */
+    background: var(--container-bg);
     color: var(--primary-color);
-    max-width: 900px;
+    max-width: var(--content-max-width);
     margin: auto;
     text-align: center;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
-    border: 2px solid #d4b27c; /* Soft Gold Border */
-  }
-  
-  /* Background */
-  body {
-    background: linear-gradient(to bottom, #f7ebd6, #f3dfc1); /* Softer contrast */
-  }
-  
-  
-  /* Search Title */
-  .search-title {
-    font-size: 32px;
+    border: 2px solid var(--gold-color);
+}
+
+/* Search Title */
+.search-title {
+    font-size: var(--search-title-size);
     font-weight: bold;
     color: var(--gold-color);
     margin-bottom: 10px;
     font-family: 'Cormorant Garamond', serif;
-  }
-  
-  /* Instructions */
-  .search-instructions {
-    font-size: 18px;
+}
+
+/* Instructions */
+.search-instructions {
+    font-size: var(--search-text-size);
     color: #555;
     margin-bottom: 30px;
     margin-top: 0px;
-  }
-  
-  /* Search Bar */
-  .search-wrapper {
+}
+
+/* Search Bar */
+.search-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,27 +43,28 @@
     border-radius: 12px;
     box-shadow: var(--soft-shadow);
     max-width: 90%;
-  }
-  
-  .search-bar {
+}
+
+.search-bar {
     flex: 1;
     padding: 16px;
-    font-size: 1.2rem;
-    border: 2px solid #E6CCAE;
+    font-size: var(--search-text-size);
+    border: 2px solid var(--light-gold);
     border-radius: 8px;
     box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease-in-out;
-  }
-  
-  .search-bar:focus {
+    border: var(--gold-color) 2px solid;
+}
+
+.search-bar:focus {
     outline: none;
     border-color: var(--accent-color);
     box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.4);
-  }
-  
-  .search-button {
+}
+
+.search-button {
     padding: 16px;
-    font-size: 1.5rem;
+    font-size: var(--search-button-size);
     background-color: var(--accent-color);
     color: white;
     border: none;
@@ -88,67 +72,61 @@
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     box-shadow: var(--soft-shadow);
-  }
-  
-  .search-button:hover {
+}
+
+.search-button:hover {
     background-color: #0056b3;
     transform: scale(1.05);
-  }
-  
-  /* Suggestions */
-  .suggestion-heading {
+}
+
+/* Suggestions */
+.suggestion-heading {
     font-weight: bold;
-    font-size: 20px;
+    font-size: var(--search-text-size);
     color: var(--primary-color);
     margin-bottom: 12px;
-  }
-  
-  .suggestion-grid {
+}
+
+.suggestion-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
     max-width: 90%;
-  }
-  
-  .suggestion-chip {
+}
+
+.suggestion-chip {
     background: var(--light-gold);
     padding: 10px 16px;
     border-radius: 16px;
-    font-size: 16px;
+    font-size: var(--search-chip-size);
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .suggestion-chip:hover {
+}
+
+.suggestion-chip:hover {
     background: var(--gold-color);
     color: white;
     transform: scale(1.1);
-  }
+}
 
-  .transcription-info {
-    font-size: 18px; /* Increased size */
-    background: rgba(255, 215, 0, 0.3); /* Light gold background */
+.transcription-info {
+    font-size: var(--search-text-size);
+    background: rgba(255, 215, 0, 0.3);
     padding: 10px;
     padding-top: 0px;
     margin-top: 0px;
-    /* font-weight: bold; */
     border-radius: 8px;
     text-align: center;
     display: inline-block;
     margin-bottom: 20px;
 }
 
-
 /* Highlight transliteration part */
 .transcription-info b {
-    /* color: #B8860B; /* Gold color to match the theme */
     font-weight: bolder;
-    font-size: 1.2rem; /* Larger size */
+    font-size: var(--search-title-size);
 }
-
-
-  

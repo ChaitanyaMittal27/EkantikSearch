@@ -1,37 +1,21 @@
 /* Styles for Footer - Fixed Position, Branding & "Radhe Radhe" Text */
 @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap');
-@import url('./responsive.css');
-
-/* Footer - Always Visible */
-.footer {
-    background: #121C2B; /* Dark navy */
-    text-align: center;
-    padding: 0px;
-    color: #FFD700; /* Gold */
-    font-size: 16px;
-    font-weight: bold;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
-    margin: 0;
-}
+@import url('./layout.css');
 
 /* "राधे राधे" Text */
 .radhe-text {
     font-family: 'Tangerine', cursive;
-    font-size: 30px;
+    font-size: var(--footer-radhe-size);
     color: #E63946; /* Deep Red */
     text-shadow: 1px 1px 6px rgba(255, 0, 0, 0.3);
-    margin: 0;
+    margin: 0px;
+    padding: 0px;
 }
 
 /* Footer Text */
 .footer-text {
-    font-size: 14px;
+    font-size: var(--footer-text-size);
     color: #B0C4DE; /* Light Steel Blue */
-    margin: 5px;
+    margin: 0px;
+    padding: 0px;
 }

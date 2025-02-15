@@ -1,0 +1,113 @@
+/* Layout.css - Defines overall page structure, positioning, and layout */
+
+:root {
+    --header-height: 65px;
+    --footer-height: 42px;
+    --content-max-width: 1200px;
+    --background-color: #f7ebd6;
+    --container-bg: #fffdf5;
+    --primary-color: #2a2a2a;
+    --gold-color: #b8860b;
+    --border-radius: 16px;
+    /* Fonts */
+    /* Header */
+    --header-title-size: 2.3rem;
+    --nav-text-size: 1.3rem;
+    /* Footer */
+    --footer-radhe-size: 1.5rem;
+    --footer-text-size: 1rem;
+    /* About */
+    --about-title-size: 2rem;
+    --about-text-size: 1.2rem;
+    /* Search Page Font Sizes */
+    --search-title-size: 2rem;
+    --search-text-size: 1.2rem;
+    --search-button-size: 1.5rem;
+    --search-chip-size: 1rem;
+    /* Results Page Font Sizes */
+    --results-title-size: 2rem;
+    --results-text-size: 1.2rem;
+    --results-table-header-size: 1.1rem;
+    --results-table-text-size: 1.01rem;
+    --results-error-size: 1rem;
+    --results-button-size: 1rem;
+    /* All Questions Page Font Sizes */
+    --questions-title-size: 2rem;
+    --questions-text-size: 1.2rem;
+    --questions-table-header-size: 1.1rem;
+    --questions-table-text-size: 1rem;
+}
+
+/* Global Layout */
+body {
+    background: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* Header Layout */
+.header {
+    height: var(--header-height);
+    width: 100%;
+    background: #121C2B;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Main Content Layout - Expanded for Tables */
+.main-content {
+    width: 90%; /* More width for better table display */
+    max-width: 1200px; /* Allows flexibility while preventing excessive width */
+    margin: auto; /* Centers horizontally */
+    margin-top: calc(var(--header-height) + 20px);
+    margin-bottom: calc(var(--footer-height) + 20px);
+    padding: 40px; /* More padding for readability */
+    background: var(--container-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+
+/* Footer Layout */
+.footer {
+    height: var(--footer-height);
+    width: 100%;
+    background: #121C2B;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.container {
+    max-width: var(--content-max-width);
+    margin: auto;
+    padding: 20px;
+}
+
+/* Global Table Wrapper - Ensures All Tables Scroll Properly */
+.table-wrapper {
+    max-height: 400px; /* Controls table scroll height */
+    overflow-y: auto;
+    overflow-x: auto;
+    margin-top: 10px;
+}
