@@ -14,9 +14,7 @@ FAILED_DETAILS_FILE = "update/failed_details.txt"
 load_dotenv(dotenv_path="../.env")
 
 # Retrieve API key
-#API_KEY = os.getenv("YOUTUBE_API_KEY") 
-
-API_KEY = "AIzaSyDG3XoaR8QcNbYn5b7ZesuA8NqvuZRh8bg"
+API_KEY = os.getenv("YOUTUBE_API_KEY") 
 
 if not API_KEY:
     raise ValueError("❌ API_KEY is missing! Make sure it's set in the .env file.")
