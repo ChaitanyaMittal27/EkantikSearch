@@ -4,7 +4,7 @@ import sys
 import os
 from dotenv import load_dotenv
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from db.db_controller import TableEntry, insert_into_db, setup_database
+from db.db_controller import TableEntry, insert_into_db
 
 # 🔹 Input file with relevant video IDs
 FILTERED_VIDEOS_FILE = "update/filtered_videos.txt"
@@ -14,7 +14,9 @@ FAILED_DETAILS_FILE = "update/failed_details.txt"
 load_dotenv(dotenv_path="../.env")
 
 # Retrieve API key
-API_KEY = os.getenv("YOUTUBE_API_KEY")
+#API_KEY = os.getenv("YOUTUBE_API_KEY") 
+
+API_KEY = "AIzaSyDG3XoaR8QcNbYn5b7ZesuA8NqvuZRh8bg"
 
 if not API_KEY:
     raise ValueError("❌ API_KEY is missing! Make sure it's set in the .env file.")
@@ -57,8 +59,7 @@ def extract_video_index(line: str):
 # 🔹 Main function to process filtered videos and store data in the database
 def main():
     """Reads filtered videos, fetches descriptions, extracts questions, and inserts into the database."""
-    setup_database()  # Ensure database is set up before inserting data
-
+    
     failed_videos = []  # List to store failed videos
 
     with open(FILTERED_VIDEOS_FILE, "r", encoding="utf-8") as infile:
