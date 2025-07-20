@@ -1,6 +1,8 @@
 """
 populateDB.py - Runs the full update process.
 
+Run from the backend directory to ensure all paths are correct.
+
 This script:
 1. Fetches latest video list.
 2. Filters relevant videos.
@@ -33,21 +35,23 @@ if __name__ == "__main__":
     print("🚀 Starting full database update process...")
 
     # Step 1: Fetch all videos from YouTube API
-    run_command("python update/fetchVideoList.py")
+    run_command("python initial_populate/fetchVideoList.py")
 
-    # Step 2: Filter relevant videos with #XXX in title
-    run_command("python update/filterRelevantVideos.py")
+    # Step 2: Filter relevant videos with #DDD in title
+    run_command("python initial_populate/filterRelevantVideos.py")
 
     # Step 3: Fetch descriptions, extract questions, and insert into DB
-    run_command("python update/setupAndPopulateDB.py")
+    run_command("python initial_populate/setupAndPopulateDB.py")
+
+    print("✅ Database setup and update completed successfully!")
 
     # Step 4: Export the database to JSON for frontend
-    run_command(f"python db/export_to_json.py {DB_PUBLIC_PATH}")
+    #run_command(f"python db/export_to_json.py {DB_PUBLIC_PATH}")
 
     # Step 5: Archive the exported JSON for historical backups
-    run_command(f"python db/export_to_json.py {DB_ARCHIVE_PATH}")
+    #run_command(f"python db/export_to_json.py {DB_ARCHIVE_PATH}")
 
     # Step 6: Export the questions to JSON for frontend
-    run_command(f"python db/export_qs_to_json.py {DB_QUES_PUBLIC_PATH}")
+    #run_command(f"python db/export_qs_to_json.py {DB_QUES_PUBLIC_PATH}")
 
-    print("✅ Database update and export completed successfully!")
+    #print("✅ Database update and export completed successfully!")

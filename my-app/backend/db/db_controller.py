@@ -1,6 +1,8 @@
 # backend/db/db_controller.py
 
 from .supabase_client import get_connection
+from psycopg2.extras import execute_values
+
 
 class TableEntry:
     def __init__(self, question_text, video_url, timestamp, video_date, video_index, video_question_index):
@@ -52,3 +54,34 @@ def search_questions(query):
     cursor.close()
     conn.close()
     return results
+
+def insert_batch(entries):
+    """Insert a list of TableEntry objects into Supabase in one batch."""
+    if not entries:
+        return
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    query = """
+        INSERT INTO questions (
+            question_text, video_url, timestamp, video_date, video_index, video_question_index
+        ) VALUES %s
+        ON CONFLICT DO NOTHING;
+    """
+
+    data = [
+        (
+            entry.question_text,
+            entry.video_url,
+            entry.timestamp,
+            entry.video_date,
+            entry.video_index,
+            entry.video_question_index
+        ) for entry in entries
+    ]
+
+    execute_values(cursor, query, data)
+    conn.commit()
+    cursor.close()
+    conn.close()
