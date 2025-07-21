@@ -1,103 +1,123 @@
 /* AllQuestions.css - Styles for All Questions Page */
-@import url('./layout.css');
+@import url("./layout.css");
 
 /* Page Container */
 .all-questions-container {
-    padding: 40px;
-    background: var(--container-bg);
-    color: var(--primary-color);
-    max-width: var(--content-max-width);
-    margin: auto;
-    text-align: center;
-    border-radius: var(--border-radius);
-    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
-    border: 2px solid var(--gold-color);
-    max-height: calc(100vh - var(--header-height) - var(--footer-height) - 14rem); /* Prevents body overflow */
-    overflow: hidden; /* Ensures only the table scrolls */
-    display: flex;
-    flex-direction: column;
+  padding: 40px;
+  background: var(--container-bg);
+  color: var(--primary-color);
+  max-width: var(--content-max-width);
+  margin: auto;
+  text-align: center;
+  border-radius: var(--border-radius);
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--gold-color);
+  max-height: calc(
+    100vh - var(--header-height) - var(--footer-height) - 14rem
+  ); /* Prevents body overflow */
+  overflow: hidden; /* Ensures only the table scrolls */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Page Title */
 .all-questions-title {
-    font-size: var(--questions-title-size);
-    font-weight: bold;
-    color: var(--gold-color);
-    margin-bottom: 10px;
-    font-family: 'Cormorant Garamond', serif;
+  font-size: var(--questions-title-size);
+  font-weight: bold;
+  color: var(--gold-color);
+  margin-bottom: 10px;
+  font-family: "Cormorant Garamond", serif;
 }
 
 /* Instructions */
 .instructions {
-    font-size: var(--questions-text-size);
-    color: #555;
-    margin-bottom: 20px;
+  font-size: var(--questions-text-size);
+  color: #555;
+  margin-bottom: 20px;
 }
 
 /* Table Container (Scrollable) */
 .table-container {
-    max-width: 95%;
-    margin: auto;
-    overflow-y: auto; /* Ensures only the table is scrollable */
-    max-height: 70vh; /* Prevents full-page overflow */
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    background: white;
+  max-width: 95%;
+  margin: auto;
+  overflow-y: auto; /* Ensures only the table is scrollable */
+  max-height: 70vh; /* Prevents full-page overflow */
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  background: white;
 }
 
 /* Styled Table */
 .questions-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
 }
 
 /* Table Header */
 .questions-table thead {
-    background: #1A2B48; /* Dark Blue */
-    color: #FFD700; /* Gold */
-    font-size: var(--questions-table-header-size);
+  background: #1a2b48; /* Dark Blue */
+  color: #ffd700; /* Gold */
+  font-size: var(--questions-table-header-size);
 }
 
 /* Table Headers */
 .questions-table th {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 2px solid #FFD700;
-    white-space: nowrap; /* Prevent wrapping */
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ffd700;
+  white-space: nowrap; /* Prevent wrapping */
 }
 
 /* Table Rows */
 .questions-table tbody tr {
-    border-bottom: 1px solid #ddd;
-    transition: background 0.2s ease-in-out;
+  border-bottom: 1px solid #ddd;
+  transition: background 0.2s ease-in-out;
 }
 
 /* Alternating Row Colors */
 .questions-table tbody tr:nth-child(even) {
-    background: #FAF3E0;
+  background: #faf3e0;
 }
 
 /* Row Hover Effect */
 .questions-table tbody tr:hover {
-    background: #E6CCAE;
+  background: #e6ccae;
 }
 
 /* Table Data */
 .questions-table td {
-    padding: 12px;
-    text-align: left;
-    font-size: var(--questions-table-text-size);
-    white-space: normal; /* Allow multi-line text */
+  padding: 12px;
+  text-align: left;
+  font-size: var(--questions-table-text-size);
+  white-space: normal; /* Allow multi-line text */
 }
 
 /* Clickable Links */
 .questions-table td a {
-    color: #1A2B48;
-    font-weight: bold;
-    text-decoration: none;
+  color: #1a2b48;
+  font-weight: bold;
+  text-decoration: none;
+}
+.questions-table td a:hover {
+  color: blue;
 }
 
-.questions-table td a:hover {
-    color: blue;
+/* Pagination */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.nav-button {
+  padding: 6px 14px;
+  margin: 0 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.page-label {
+  font-weight: bold;
 }
