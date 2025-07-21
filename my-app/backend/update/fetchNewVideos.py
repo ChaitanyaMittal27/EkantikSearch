@@ -20,7 +20,7 @@ CHANNEL_ID = "UCEk1jBxAl6fe-_G37G7huQA"
 
 # YTData API key
 load_dotenv(dotenv_path="../.env")
-API_KEY = "AIzaSyDG3XoaR8QcNbYn5b7ZesuA8NqvuZRh8bg" #os.getenv("YOUTUBE_API_KEY")
+API_KEY = os.getenv("YOUTUBE_API_KEY")
 if not API_KEY:
     raise ValueError("❌ API_KEY is missing!")
 

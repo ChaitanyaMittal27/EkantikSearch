@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from db.db_controller import TableEntry, insert_batch
 
 load_dotenv(dotenv_path="../.env")
-API_KEY = "AIzaSyDG3XoaR8QcNbYn5b7ZesuA8NqvuZRh8bg" #os.getenv("YOUTUBE_API_KEY")
+API_KEY = os.getenv("YOUTUBE_API_KEY")
 CHUNK_SIZE = 200
 
 DEFAULT_FILTERED = "update/new_filtered.txt"
