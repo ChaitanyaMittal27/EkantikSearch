@@ -40,13 +40,6 @@ jobs:
           python update/updateDB.py
           echo "update_status=success" >> $GITHUB_ENV
 
-      - name: Run Export Scripts with Arguments
-        if: env.update_status == 'success'
-        working-directory: my-app/backend
-        run: |
-          python db/export_to_json.py public/all.json
-          python db/export_qs_to_json.py public/all_qs.json
-
       - name: Commit and Push Changes
         if: env.update_status == 'success'
         env:
