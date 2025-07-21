@@ -1,4 +1,5 @@
 # backend/db/db_controller.py
+# updated to supaclient
 
 from .supabase_client import get_connection
 from psycopg2.extras import execute_values

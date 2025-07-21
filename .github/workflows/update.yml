@@ -28,17 +28,17 @@ jobs:
       - name: Run Database Update Script
         id: update_db
         env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }} # Use GitHub Secret
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          PGHOST: ${{ secrets.PGHOST }}
+          PGPORT: ${{ secrets.PGPORT }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
         working-directory: my-app/backend
         run: |
-          if python update/populateDB.py; then
-            echo "✅ Database update successful" 
-            echo "update_status=success" >> $GITHUB_ENV
-          else
-            echo "❌ Database update failed"
-            echo "update_status=failure" >> $GITHUB_ENV
-            exit 1
-          fi
+          echo "🚀 Starting update process..."
+          python update/updateDB.py
+          echo "update_status=success" >> $GITHUB_ENV
 
       - name: Run Export Scripts with Arguments
         if: env.update_status == 'success'
