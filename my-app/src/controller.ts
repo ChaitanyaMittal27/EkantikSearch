@@ -109,24 +109,27 @@ export const generateSearchVariants = async (
  * Searches the minimal question list (from '/all_qs.json') using Fuse.js.
  */
 export const searchQuestions = async (query: string): Promise<number[]> => {
-  //DEBUG: console.log("🔍 Called searchQuestions() for query:", query);
   if (!query.trim()) return [];
 
   const variants = await generateSearchVariants(query);
-  const qsResponse = await fetch("/all_qs.json");
-  const allQuestions: { id: number; question: string }[] =
-    await qsResponse.json();
 
-  const fuseOptions = {
-    keys: ["question"],
+  const { data: allQuestions, error } = await supabase
+    .from("questions")
+    .select("id, question_text");
+
+  if (error || !allQuestions) {
+    console.error("Supabase question fetch error:", error?.message);
+    return [];
+  }
+
+  const fuse = new Fuse(allQuestions, {
+    keys: ["question_text"],
     threshold: SEARCH_THRESHOLD,
-  };
+  });
 
   const matchingIds = new Set<number>();
   variants.forEach((variant) => {
-    const fuse = new Fuse(allQuestions, fuseOptions);
-    const fuseResults = fuse.search(variant);
-    fuseResults.forEach((result) => matchingIds.add(result.item.id));
+    fuse.search(variant).forEach((result) => matchingIds.add(result.item.id));
   });
 
   return Array.from(matchingIds);
@@ -135,25 +138,31 @@ export const searchQuestions = async (query: string): Promise<number[]> => {
 /**
  * handleSearch:
  * Uses searchQuestions to retrieve matching question IDs, then fetches
- * the full results from '/all.json' and filters by those IDs.
+ * the full results supabase and filters by those IDs.
  */
 export const handleSearch = async (
   query: string
 ): Promise<
   {
     id: number;
-    question: string;
+    question_text: string;
     video_url: string;
     video_date: string;
     video_index: number;
   }[]
 > => {
   const matchingIds = await searchQuestions(query);
-  const fullResponse = await fetch("/all.json");
-  const fullResults = await fullResponse.json();
-  return fullResults.filter((item: { id: number }) =>
-    matchingIds.includes(item.id)
-  );
+  const { data: fullResults, error } = await supabase
+    .from("questions")
+    .select("id, question_text, video_url, video_date, video_index, timestamp")
+    .in("id", matchingIds);
+
+  if (error || !fullResults) {
+    console.error("Supabase full result fetch error:", error?.message);
+    return [];
+  }
+
+  return fullResults;
 };
 
 /**
@@ -165,7 +174,7 @@ export const fetchResults = async (
 ): Promise<
   {
     id: number;
-    question: string;
+    question_text: string;
     video_url: string;
     video_date: string;
     video_index: number;

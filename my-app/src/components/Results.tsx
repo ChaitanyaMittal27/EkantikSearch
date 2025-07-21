@@ -7,7 +7,7 @@ import { fetchResults } from "../../src/controller";
 // Updated interface to include an optional timestamp field.
 interface Result {
   id: number;
-  question: string;
+  question_text: string;
   video_url: string;
   video_date: string;
   video_index: number;
@@ -31,14 +31,14 @@ const convertTimestampToSeconds = (timestamp: string): number => {
  * If the videoLink already has query parameters, it appends using '&'; otherwise, '?'.
  */
 const constructJumpURL = (videoLink: string, timestamp?: string): string => {
-    if (!timestamp) return videoLink; // No timestamp? Return original URL
-  
-    const seconds = convertTimestampToSeconds(timestamp);
-    if (seconds === 0) return videoLink; // Invalid timestamp? Return original URL
-  
-    const separator = videoLink.includes("?") ? "&" : "?";
-    return `${videoLink}${separator}t=${seconds}s`;
-  };
+  if (!timestamp) return videoLink; // No timestamp? Return original URL
+
+  const seconds = convertTimestampToSeconds(timestamp);
+  if (seconds === 0) return videoLink; // Invalid timestamp? Return original URL
+
+  const separator = videoLink.includes("?") ? "&" : "?";
+  return `${videoLink}${separator}t=${seconds}s`;
+};
 
 const Results: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -63,12 +63,15 @@ const Results: React.FC = () => {
       setLoading(false);
     }
   }, [searchQuery]);
-  
-  
+
   return (
     <div className="results-container">
-      <h2 className="all-questions-title">Search Results for: "{searchQuery}"</h2>
-      <p className="instructions">Click on <strong>Watch</strong> to jump to that part of the video.</p>
+      <h2 className="all-question_texts-title">
+        Search Results for: "{searchQuery}"
+      </h2>
+      <p className="instructions">
+        Click on <strong>Watch</strong> to jump to that part of the video.
+      </p>
 
       {loading && <p>Loading...</p>}
 
@@ -88,7 +91,7 @@ const Results: React.FC = () => {
           <table className="results-table">
             <thead>
               <tr>
-                <th>Question</th>
+                <th>question_text</th>
                 <th>Ekantik #</th>
                 <th>Timestamp</th>
                 <th>Date</th>
@@ -97,15 +100,22 @@ const Results: React.FC = () => {
             </thead>
             <tbody>
               {results.slice(0, 30).map((r) => {
-                const finalVideoURL = constructJumpURL(r.video_url, r.timestamp);
+                const finalVideoURL = constructJumpURL(
+                  r.video_url,
+                  r.timestamp
+                );
                 return (
                   <tr key={r.id}>
-                    <td>{r.question}</td>
+                    <td>{r.question_text}</td>
                     <td>{r.video_index}</td>
                     <td>{r.timestamp || "N/A"}</td>
                     <td>{r.video_date}</td>
                     <td>
-                      <a href={finalVideoURL} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={finalVideoURL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         Watch
                       </a>
                     </td>
