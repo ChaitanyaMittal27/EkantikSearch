@@ -1,0 +1,77 @@
+name: Auto-Update Database
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install Required Python Modules and Verify
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev python3-dev  # Required for psycopg2
+          pip install requests python-dotenv psycopg2
+          python -c "import requests; import dotenv, psycopg2; print('✅ All dependencies installed successfully.')"
+
+      - name: Run Database Update Script
+        id: update_db
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          PGHOST: ${{ secrets.PGHOST }}
+          PGPORT: ${{ secrets.PGPORT }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+        working-directory: my-app/backend
+        run: |
+          echo "🚀 Starting update process..."
+          python update/updateDB.py
+          echo "update_status=success" >> $GITHUB_ENV
+
+      - name: Run Export Scripts with Arguments
+        if: env.update_status == 'success'
+        working-directory: my-app/backend
+        run: |
+          python db/export_to_json.py public/all.json
+          python db/export_qs_to_json.py public/all_qs.json
+
+      - name: Commit and Push Changes
+        if: env.update_status == 'success'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use GitHub's built-in token
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Check if there are any changes before committing
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "⚠️ No changes to commit"
+            exit 0
+          fi
+
+          git add -A  # Stage all changes
+
+          DATE=$(date +'%Y-%m-%d %H:%M:%S UTC')
+          git commit -m "Auto-update: Database and JSON files on $DATE"
+
+          # Push using GitHub’s built-in authentication token
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ChaitanyaMittal27/Ekankik_QS.git main
+        continue-on-error: true
+
+      - name: Report Failure
+        if: failure()
+        run: |
+          echo "❌ Database update failed. Check logs for details."
+          exit 1
