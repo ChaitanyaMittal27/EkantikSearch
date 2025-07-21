@@ -1,94 +1,153 @@
 # Ekantik Search 🔍
-**Live Website:** 
+
+**Live Website:**  
 [Ekantik Search](https://ekantiksearch.vercel.app/) 🚀
 
-Ekantik Search is a **spiritual question search engine** that helps users **find answers** from a curated YouTube channel focused on spirituality. It automatically **fetches, filters, and updates** the database with the latest Q&A content.
+Ekantik Search is a **spiritual question search engine** that helps users **find timestamped answers** from a curated YouTube channel focused on spiritual wisdom. It supports **Hindi, English, and Hinglish input**, and keeps its database **automatically updated** using GitHub Actions and Supabase.
+
+## 🌟 Project Overview
+
+This is a **full-stack multilingual search engine** designed to:
+
+- Let users search spiritual questions intuitively.
+- Support **Hindi transliteration and translation**.
+- Auto-fetch new YouTube videos and questions regularly.
+- Serve fast responses via a PostgreSQL database on Supabase.
+
+## 🏠 Architecture Overview
+
+### 🔹 Frontend (React + Vercel)
+
+- Built with **React + TypeScript**
+- Search suggestions, query parsing, and result display
+- **Multilingual support** via Microsoft Translator API
+- Deployed using **Vercel** for CI/CD and instant updates
+
+### 🔹 Backend (Python Scripts)
+
+- Python scripts fetch, parse, and insert YouTube video Q&A data
+- Supabase (PostgreSQL) is used for question storage
+- Includes initial setup tools and ongoing update logic
+
+### 🔹 Database (Supabase PostgreSQL)
+
+- Schema:
+  ```sql
+  CREATE TABLE questions (
+    id SERIAL PRIMARY KEY,
+    question_text TEXT,
+    video_url TEXT,
+    timestamp TEXT,
+    video_date TEXT,
+    video_index INT,
+    video_question_index INT
+  );
+  ```
+- Indexed by latest Ekantik video uploads and timestamps
+
+## ⚙️ Automated Updates & Deployment
+
+### ✅ GitHub Actions (Daily)
+
+- Runs Python update scripts every night (UTC)
+- Adds **only new videos/questions** to Supabase
+- Logs failures and update metadata
+
+### 🚀 Vercel CI/CD
+
+- Automatic frontend deployment on every push to `main`
+- Uses `.env` environment variables for Translator API keys
+
+## 🚀 How It Works
+
+1. **Search** from the UI in English, Hindi (देवनागरी), or Hinglish
+2. The app detects language and translates/transliterates as needed
+3. Queries are matched using **Supabase** (PostgreSQL) and **Fuse.js fuzzy search**
+4. Links direct users to **specific YouTube timestamps** for each answer
+
+## 🗂 Project Structure
+
+```plaintext
+EkantikSearch/
+├── src/                   # React Frontend
+│   ├── components/        # Search, Results, AllQuestions, etc.
+│   └── css/               # styles for components
+│   └── controller.ts/     # main controller for ui logic
+│   └── supabaseClient.ts/ # access to supabase elements
+│   └── types.ts/          # typeset for table and "question"
+│
+├── backend/
+│   ├── db/                # db scripts
+│   ├── init_populate/     # One-time DB init and historical scraping
+│   ├── tests/             # testing
+│   ├── update             #  update the db, run by ci/cd
+│
+├── public/                # Static files (optional, may be empty)
+└── README.md
+```
+
+## 🧪 Testing Locally
+
+1. Clone the repo:
+
+```bash
+git clone https://github.com/ChaitanyaMittal27/EkantikSearch.git
+cd EkantikSearch
+```
+
+2. Set up environment variables in `.env` (or Vercel dashboard):
+
+```
+VITE_MICROSOFT_AZURE_KEY=<your-api-key>
+VITE_MICROSOFT_TRANSLATOR_REGION=centralindia
+```
+
+3. Install Python requirements:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Run backend scripts:
+
+```bash
+python init_populate/setupdb.py  # Optional: Initial data load
+```
+
+5. Start the frontend:
+
+```bash
+npm install
+npm run dev
+```
+
+## 📁 Related READMEs
+
+- [`init_populate/README.md`](init_populate/README.md) → For initial setup, old JSON export, and population steps
+- [`backend/update/README.md`](backend/update/README.md) → For scheduled auto-update logic and how Supabase is used
+
+## 🛠 Tech Stack
+
+| Layer                | Tech Used                                                |
+| -------------------- | -------------------------------------------------------- |
+| Frontend             | React, TypeScript, TailwindCSS                           |
+| Backend              | Python, Supabase Client, YouTube API                     |
+| Database             | PostgreSQL (via Supabase)                                |
+| Language Support     | Microsoft Translator API (Translation + Transliteration) |
+| Hosting & Automation | Vercel + GitHub Actions                                  |
+
+## 🧠 Suggestions / Feature Requests
+
+- Open a GitHub Issue
+- Or contribute ideas to `SUGGESTIONS.md`
 
 ---
 
-## 🌟 **Project Overview**
-This project is a **full-stack application** built to provide **efficient search** for spiritual questions. It consists of:
+## 📬 Maintainer & Contact
 
-- **Frontend**: React-based search UI (deployed on Vercel)
-- **Backend Scripts**: Python scripts for **fetching YouTube data** and **updating the database**
-- **Database**: SQLite (`ekantik_data.db`) for storing processed questions
-- **Automated Updates**: GitHub Actions to **fetch, filter, and update** data daily
+- [Chaitanya Mittal](https://github.com/ChaitanyaMittal27)
+- Project Repo: [Ekantik Search on GitHub](https://github.com/ChaitanyaMittal27/EkantikSearch)
 
 ---
 
-## 🏠 **Architecture Overview**
-### 🔹 **Frontend (React)**
-- Built with **TypeScript + React**
-- Handles **search and transliteration**
-- Deployed on **Vercel** for auto-build & deployment
-
-### 🔹 **Backend (Python Scripts)**
-- No traditional API server, just **processing scripts**
-- **Fetches latest YouTube videos** using `fetchVideoList.py`
-- **Filters relevant Q&A videos** using `filterRelevantVideos.py`
-- **Extracts questions and stores in SQLite DB** via `setupAndPopulateDB.py`
-- **Exports JSON for frontend consumption** (`export_to_json.py`)
-
-### 🔹 **Database (SQLite)**
-- Stores processed **spiritual Q&A data**
-- Updated automatically every day via GitHub Actions
-
----
-
-## ⚙️ **Automated Updates & Deployment**
-This project is **fully automated** with:
-1. **GitHub Actions for Daily Updates** ✅
-   - Runs `populateDB.py` every day at **midnight UTC**
-   - Fetches, filters, and updates `ekantik_data.db`
-   - Commits new JSON data to the repo
-
-2. **Continuous Deployment on Vercel** 🚀
-   - Auto-builds and deploys the frontend when code is pushed to **main**
-   - Provides instant **live updates** on [Ekantik Search](https://ekantiksearch.vercel.app/)
-
----
-
-## 🚀 **How It Works**
-1. **User searches for a question** 🔎 → React frontend queries the JSON database
-2. **If new questions are uploaded** on YouTube 🎥 → GitHub Actions fetches them daily
-3. **Data updates automatically** in the SQLite database 📊 → JSON is refreshed for frontend use
-4. **Frontend is always up-to-date** via **Vercel auto-deploy** 🚀
-
----
-
-## 🛠 **Tech Stack**
-- **Frontend**: React (TypeScript), TailwindCSS, Vercel Hosting
-- **Backend**: Python (Requests, SQLite)
-- **Database**: SQLite (`ekantik_data.db`)
-- **Automation**: GitHub Actions for auto-updates
-- **Hosting**: Vercel (React frontend), GitHub Actions (Backend processing)
-
----
-
-## 👨‍💻 **How to Contribute**
-1. **Clone the repo**:
-   ```sh
-   git clone https://github.com/ChaitanyaMittal27/EkantikSearch.git
-   cd EkantikSearch
-   ```
-2. **Install Python dependencies**:
-   ```sh
-   pip install requests python-dotenv
-   ```
-3. **Run update scripts manually** (optional):
-   ```sh
-   python my-app/backend/update/populateDB.py
-   ```
-4. **Push changes & watch them deploy** 🚀
-
----
-
-## 📨 **Contact & Support**
-- **Maintainer**: [Chaitanya Mittal](https://github.com/ChaitanyaMittal27)
-- **GitHub Repo**: [Ekantik Search](https://github.com/ChaitanyaMittal27/EkantikSearch)
-- **Issues?** Open a [GitHub Issue](https://github.com/ChaitanyaMittal27/EkantikSearch/issues)
-- For **suggestions**, **improvements**, and **new feature ideas**, check out [SUGGESTIONS.md](SUGGESTIONS.md) and contribute your thoughts!
-
----
-
-### 🎉 **Enjoy seamless, automated search for spiritual knowledge!** 🎉
+### 🙏🏼 Enjoy seamless, intelligent access to timeless wisdom.
